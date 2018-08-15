@@ -71,7 +71,15 @@
         <activity
             android:name=".view.PicturePostedActivity"
             android:label="PicturePosted" />
-
+        <activity
+            android:name=".view.AddEventTextActivity"
+            android:label="AddEventText" />
+        <activity
+            android:name=".view.AddEventMapActivity"
+            android:label="AddEventMap" />
+        <activity
+            android:name=".view.AddEventImageActivity"
+            android:label="AddEventImage" />
     </application>
 
 </manifest>

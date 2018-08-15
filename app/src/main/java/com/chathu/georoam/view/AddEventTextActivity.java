@@ -63,7 +63,7 @@ public class AddEventTextActivity extends AppCompatActivity {
      * database
      */
     private void next(){
-        Intent intent = new Intent( AddEventTextActivity.this, PostEventTwoActivityController.class );
+        Intent intent = new Intent( AddEventTextActivity.this, AddEventMapActivity.class );
         intent.putExtra ( "EventName", eventName.getText().toString().trim() );
         intent.putExtra ( "EventDescription", eventDescription.getText().toString().trim() );
         intent.putExtra("EventStartDate",eventStartDate.getText().toString().trim());
