@@ -1,13 +1,15 @@
 package com.chathu.georoam.model;
 
 
+import com.google.android.gms.maps.model.LatLng;
 
 public class Pictures {
     private String pictureName;
     private String pictureDescription;
     private String locationName;
     private String locationAddress;
-    private LatLong locationCoordinates;
+    private Double latitude;
+    private Double longitude;
     private String pictureURL;
     private String userID;
 
@@ -45,12 +47,20 @@ public class Pictures {
         this.locationAddress = locationAddress;
     }
 
-    public LatLong getLocationCoordinates() {
-        return locationCoordinates;
+    public Double getLatitude() {
+        return latitude;
     }
 
-    public void setLocationCoordinates(LatLong locationCoordinates) {
-        this.locationCoordinates = locationCoordinates;
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 
     public String getPictureURL() {
@@ -69,12 +79,13 @@ public class Pictures {
         this.userID = userID;
     }
 
-    public Pictures(String pictureName, String pictureDescription, String locationName, String locationAddress, LatLong locationCoordinates, String pictureURL, String userID) {
+    public Pictures(String pictureName, String pictureDescription, String locationName, String locationAddress, Double latitude, Double longitude, String pictureURL, String userID) {
         this.pictureName = pictureName;
         this.pictureDescription = pictureDescription;
         this.locationName = locationName;
         this.locationAddress = locationAddress;
-        this.locationCoordinates = locationCoordinates;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.pictureURL = pictureURL;
         this.userID = userID;
     }

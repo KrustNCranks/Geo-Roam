@@ -257,7 +257,9 @@ public class AddPictureImageActivity extends AppCompatActivity {
                         final String pictureDescription = getIntent().getStringExtra("PictureDescription");
                         final String locationName = getIntent().getStringExtra("LocationName");
                         final String locationAddress = getIntent().getStringExtra("LocationAddress");
-                        final LatLong locationCoordinates = getIntent().getExtras().getParcelable("LocationCoordinates");
+                        //final LatLng locationCoordinates = getIntent().getExtras().getParcelable("LocationCoordinates");
+                        final Double latitude = getIntent().getDoubleExtra("Latitude",0.00);
+                        final Double longitude = getIntent().getDoubleExtra("longitude",0.00);
                         final String imageUrl = imageUpload.getImageUrl();
                         final String userID = mAuth.getCurrentUser().getUid();
 
@@ -266,7 +268,8 @@ public class AddPictureImageActivity extends AppCompatActivity {
                                 pictureDescription,
                                 locationName,
                                 locationAddress,
-                                locationCoordinates,
+                                latitude,
+                                longitude,
                                 imageUrl,
                                 userID
                         );

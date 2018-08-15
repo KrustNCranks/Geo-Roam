@@ -87,16 +87,20 @@ public class AddPictureMapActivity extends FragmentActivity implements OnMapRead
                 Place place = PlacePicker.getPlace(data, this);
                 String locationName = place.getName().toString();
                 String locationAddress = place.getAddress().toString();
-                LatLng locationCoordinates = place.getLatLng();
+                //LatLng locationCoordinates = place.getLatLng();
+                Double latitude = place.getLatLng().latitude;
+                Double longitude = place.getLatLng().longitude;
                 String name = getIntent().getStringExtra("PictureName");
                 String description = getIntent().getStringExtra("PictureDescription");
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(locationCoordinates.latitude, locationCoordinates.longitude),15));
+                //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(locationCoordinates.latitude, locationCoordinates.longitude),15));
                 Intent intent = new Intent( AddPictureMapActivity.this, AddPictureImageActivity.class );
                 intent.putExtra ( "PictureName", name );
                 intent.putExtra ( "PictureDescription", description);
                 intent.putExtra ( "LocationName", locationName );
                 intent.putExtra ( "LocationAddress", locationAddress );
-                intent.putExtra("LocationCoordinates",locationCoordinates);
+               // intent.putExtra("LocationCoordinates",locationCoordinates);
+                intent.putExtra("Latitude",latitude);
+                intent.putExtra("longitude",longitude);
                 startActivity(intent);
             }
         }

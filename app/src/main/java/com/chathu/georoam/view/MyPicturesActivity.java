@@ -76,12 +76,15 @@ public class MyPicturesActivity extends AppCompatActivity {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //Pictures pictures = dataSnapshot.getValue(Pictures.class);
-                //mPictures.add(pictures);
-                for (DataSnapshot ds : dataSnapshot.getChildren()){
-                    Pictures pictures = ds.getValue(Pictures.class);
+                Pictures pictures = dataSnapshot.getValue(Pictures.class);
+                mPictures.add(pictures);
+
+               /*for (DataSnapshot ds : dataSnapshot.getChildren()){
+                   Pictures pictures = ds.getValue(Pictures.class);
+
+                   // Pictures name = ds.child("pictureName").getValue(Pictures.class);
                     mPictures.add(pictures);
-                }
+                } */
                 mAdapter = new ImageAdapter(MyPicturesActivity.this,mPictures);
                 mRecyclerView.setAdapter(mAdapter);
             }
