@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.chathu.georoam.R;
+import com.chathu.georoam.model.LatLong;
 import com.chathu.georoam.model.Pictures;
 import com.chathu.georoam.model.UserPictureUpload;
 import com.google.android.gms.maps.model.LatLng;
@@ -256,7 +257,7 @@ public class AddPictureImageActivity extends AppCompatActivity {
                         final String pictureDescription = getIntent().getStringExtra("PictureDescription");
                         final String locationName = getIntent().getStringExtra("LocationName");
                         final String locationAddress = getIntent().getStringExtra("LocationAddress");
-                        final LatLng locationCoordinates = getIntent().getExtras().getParcelable("LocationCoordinates");
+                        final LatLong locationCoordinates = getIntent().getExtras().getParcelable("LocationCoordinates");
                         final String imageUrl = imageUpload.getImageUrl();
                         final String userID = mAuth.getCurrentUser().getUid();
 

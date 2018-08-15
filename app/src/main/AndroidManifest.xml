@@ -86,6 +86,9 @@
         <activity
             android:name=".view.MyPostsActivity"
             android:label="MyPosts" />
+        <activity
+            android:name=".view.MyPicturesActivity"
+            android:label="MyPictures" />
     </application>
 
 </manifest>

@@ -56,7 +56,7 @@ public class MyPostsActivity extends AppCompatActivity {
         pictures.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(MyPostsActivity.this,MyPicturesActivityController.class));
+                startActivity(new Intent(MyPostsActivity.this,MyPicturesActivity.class));
             }
         });
     }
