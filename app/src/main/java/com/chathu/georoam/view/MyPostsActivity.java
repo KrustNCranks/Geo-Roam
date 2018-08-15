@@ -11,10 +11,12 @@ import android.widget.ImageView;
 
 import com.chathu.georoam.R;
 
-public class PicturePostedActivity extends AppCompatActivity {
+public class MyPostsActivity extends AppCompatActivity {
+    private Button events;
+    private Button pictures;
+    private ImageView back;
 
-    private Button dashboard;
-    private Button myPosts;
+
     /**
      * This is the onCreate , when the activity runs, all the code runs in this
      * @param savedInstanceState
@@ -22,28 +24,39 @@ public class PicturePostedActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.picture_posted_activity);
+        setContentView(R.layout.my_posts_activity);
+
 
         // This code is for hiding the Action Bar in The Splash Screen Activity
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
         // Adding XML Variables to the Controller in order to manipulate them
-        dashboard = (Button) findViewById(R.id.dashboardButton);
-        myPosts = (Button) findViewById(R.id.myPostsButton);
+        events = (Button)findViewById(R.id.eventsButton);
+        pictures = (Button)findViewById(R.id.picturesButton);
+        back = (ImageView)findViewById(R.id.backButton);
 
-        // Sends the user back to the dashboard after Posting an image
-        dashboard.setOnClickListener(new View.OnClickListener() {
+        // onClick event to go back to the dashboard
+        back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(PicturePostedActivity.this, DashboardActivity.class));
+                startActivity(new Intent(MyPostsActivity.this,DashboardActivity.class));
             }
         });
 
-        myPosts.setOnClickListener(new View.OnClickListener() {
+        // onClick event to go to the events activity
+        events.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(PicturePostedActivity.this, MyPostsActivity.class));
+
+            }
+        });
+
+        // onClick event to go to the pictures activity
+        pictures.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //startActivity(new Intent(MyPostsActivity.this,MyPicturesActivityController.class));
             }
         });
     }

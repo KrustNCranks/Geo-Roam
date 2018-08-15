@@ -83,6 +83,9 @@
         <activity
             android:name=".view.EventPostedActivity"
             android:label="EventPosted" />
+        <activity
+            android:name=".view.MyPostsActivity"
+            android:label="MyPosts" />
     </application>
 
 </manifest>

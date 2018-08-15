@@ -37,5 +37,12 @@ public class EventPostedActivity extends AppCompatActivity {
                 startActivity(new Intent(EventPostedActivity.this, DashboardActivity.class));
             }
         });
+
+        myPosts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(EventPostedActivity.this, MyPostsActivity.class));
+            }
+        });
     }
 }
