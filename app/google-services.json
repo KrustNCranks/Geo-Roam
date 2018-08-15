@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "126689866400",
+    "firebase_url": "https://geo-roam2.firebaseio.com",
+    "project_id": "geo-roam2",
+    "storage_bucket": "geo-roam2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:126689866400:android:4be9ff9d1b947715",
+        "android_client_info": {
+          "package_name": "com.chathu.georoam"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "126689866400-4qpss1k93gip452j2ibe6143v0vjoa8k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.chathu.georoam",
+            "certificate_hash": "579f557d9582a6f28c008dd263d6f88e21511eba"
+          }
+        },
+        {
+          "client_id": "126689866400-ls12249m0od8oj2l3fn6gdb7c1dbl96m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBibgLLVTzv76cLrbS3Fn_5qTF4FInzYN4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "126689866400-ls12249m0od8oj2l3fn6gdb7c1dbl96m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
