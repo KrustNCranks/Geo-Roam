@@ -280,7 +280,7 @@ public class AddEventImageActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     // If successfull this will navigate to the get started page
                                     Toast.makeText(AddEventImageActivity.this, "EVENT CREATED",Toast.LENGTH_SHORT).show();
-                                    startActivity(new Intent(AddEventImageActivity.this, GetStartedActivityController.class));
+                                    startActivity(new Intent(AddEventImageActivity.this, EventPostedActivity.class));
                                 } else {
                                     // If Fail, it will display and error message as a toast
 

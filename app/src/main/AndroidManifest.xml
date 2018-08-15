@@ -80,6 +80,9 @@
         <activity
             android:name=".view.AddEventImageActivity"
             android:label="AddEventImage" />
+        <activity
+            android:name=".view.EventPostedActivity"
+            android:label="EventPosted" />
     </application>
 
 </manifest>
