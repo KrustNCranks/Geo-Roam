@@ -63,8 +63,6 @@ public class ProfileActivity extends AppCompatActivity {
         // Access the Firebase Auth instance
         mAuth = FirebaseAuth.getInstance();
 
-
-
         // Get userID
         FirebaseUser user = mAuth.getCurrentUser();
         userID = user.getUid();
