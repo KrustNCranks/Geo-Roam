@@ -94,6 +94,7 @@ public class AddEventMapActivity extends FragmentActivity implements OnMapReadyC
                 String description = getIntent().getStringExtra("EventDescription");
                 String startDate = getIntent().getStringExtra("EventStartDate");
                 String endDate = getIntent().getStringExtra("EventEndDate");
+                String isPrivate = getIntent().getStringExtra("Status");
                 //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(locationCoordinates.latitude, locationCoordinates.longitude),15));
                 Intent intent = new Intent( AddEventMapActivity.this, AddEventImageActivity.class );
                 intent.putExtra ( "EventName", name );
@@ -105,6 +106,7 @@ public class AddEventMapActivity extends FragmentActivity implements OnMapReadyC
                 //intent.putExtra("LocationCoordinates",locationCoordinates);
                 intent.putExtra("latitude",latitude);
                 intent.putExtra("longitude",longitude);
+                intent.putExtra("Status",isPrivate);
                 startActivity(intent);
             }
         }

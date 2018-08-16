@@ -7,8 +7,10 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 
 import com.chathu.georoam.R;
 
@@ -20,6 +22,8 @@ public class AddEventTextActivity extends AppCompatActivity {
     private EditText eventDescription;
     private EditText eventStartDate;
     private EditText eventEndDate;
+    private Switch privateSwitch;
+    private String isPrivate = null;
     /**
      * This is the onCreate , when the activity runs, all the code runs in this
      * @param savedInstanceState
@@ -40,6 +44,7 @@ public class AddEventTextActivity extends AppCompatActivity {
         eventDescription = (EditText) findViewById(R.id.eventDescription);
         eventStartDate = (EditText) findViewById(R.id.eventStartDate);
         eventEndDate = (EditText) findViewById(R.id.eventEndDate);
+        privateSwitch = (Switch)findViewById(R.id.switch1);
 
         // onClick Event for the next Button
         next.setOnClickListener(new View.OnClickListener() {
@@ -63,10 +68,17 @@ public class AddEventTextActivity extends AppCompatActivity {
      * database
      */
     private void next(){
+        if(privateSwitch.isChecked()){
+            isPrivate = "private";
+        }
+        else{
+            isPrivate = "public";
+        }
         Intent intent = new Intent( AddEventTextActivity.this, AddEventMapActivity.class );
         intent.putExtra ( "EventName", eventName.getText().toString().trim() );
         intent.putExtra ( "EventDescription", eventDescription.getText().toString().trim() );
         intent.putExtra("EventStartDate",eventStartDate.getText().toString().trim());
+        intent.putExtra("Status",isPrivate);
         intent.putExtra("EventEndDate",eventEndDate.getText().toString().trim());
         startActivity(intent);
     }

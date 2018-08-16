@@ -261,6 +261,7 @@ public class AddEventImageActivity extends AppCompatActivity {
                         final Double longitude = getIntent().getDoubleExtra("longitude",0.00);
                         final String imageUrl = imageUpload.getImageUrl();
                         final String userID = mAuth.getCurrentUser().getUid();
+                        final String isPrivate = getIntent().getStringExtra("Status");
 
                         final EventsModel event = new EventsModel(
                                 eventName,
@@ -272,7 +273,8 @@ public class AddEventImageActivity extends AppCompatActivity {
                                 latitude,
                                 longitude,
                                 imageUrl,
-                                userID
+                                userID,
+                                isPrivate
                         );
 
                         // This get an instance of the firebase database and uses this instance to post the object to the real time online database

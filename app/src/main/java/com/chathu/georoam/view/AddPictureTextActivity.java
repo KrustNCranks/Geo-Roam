@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 
 import com.chathu.georoam.R;
 
@@ -18,6 +19,8 @@ public class AddPictureTextActivity extends AppCompatActivity {
     private EditText description;
     private Button next;
     private ImageView back;
+    private Switch privateSwitch;
+    private String isPrivate = null;
 
     /**
      * This is the onCreate , when the activity runs, all the code runs in this
@@ -37,6 +40,7 @@ public class AddPictureTextActivity extends AppCompatActivity {
         back = (ImageView) findViewById(R.id.backButton);
         name = (EditText) findViewById(R.id.pictureName);
         description = (EditText) findViewById(R.id.pictureDescription);
+        privateSwitch = (Switch)findViewById(R.id.switch2);
 
         // onClick Event for the next Button
         next.setOnClickListener(new View.OnClickListener() {
@@ -60,9 +64,16 @@ public class AddPictureTextActivity extends AppCompatActivity {
      * database
      */
     private void next(){
+        if(privateSwitch.isChecked()){
+            isPrivate = "private";
+        }
+        else{
+            isPrivate = "public";
+        }
         Intent intent = new Intent ( AddPictureTextActivity.this, AddPictureMapActivity.class );
         intent.putExtra ( "PictureName", name.getText().toString().trim() );
         intent.putExtra ( "PictureDescription", description.getText().toString().trim() );
+        intent.putExtra("Status",isPrivate);
         startActivity(intent);
     }
 

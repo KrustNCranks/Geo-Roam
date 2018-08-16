@@ -12,6 +12,7 @@ public class Pictures {
     private Double longitude;
     private String pictureURL;
     private String userID;
+    private String isPrivate;
 
     public Pictures(){}
 
@@ -79,7 +80,15 @@ public class Pictures {
         this.userID = userID;
     }
 
-    public Pictures(String pictureName, String pictureDescription, String locationName, String locationAddress, Double latitude, Double longitude, String pictureURL, String userID) {
+    public String getIsPrivate() {
+        return isPrivate;
+    }
+
+    public void setIsPrivate(String isPrivate) {
+        this.isPrivate = isPrivate;
+    }
+
+    public Pictures(String pictureName, String pictureDescription, String locationName, String locationAddress, Double latitude, Double longitude, String pictureURL, String userID, String isPrivate) {
         this.pictureName = pictureName;
         this.pictureDescription = pictureDescription;
         this.locationName = locationName;
@@ -88,5 +97,6 @@ public class Pictures {
         this.longitude = longitude;
         this.pictureURL = pictureURL;
         this.userID = userID;
+        this.isPrivate = isPrivate;
     }
 }

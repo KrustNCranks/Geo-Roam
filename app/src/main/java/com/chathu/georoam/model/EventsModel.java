@@ -13,6 +13,7 @@ public class EventsModel {
     private Double longitude;
     private String eventImageURL;
     private String userID;
+    private String isPrivate;
 
     public EventsModel(){
 
@@ -98,7 +99,15 @@ public class EventsModel {
         this.userID = userID;
     }
 
-    public EventsModel(String name, String description, String startDate, String endDate, String eventLocationname, String eventLocationAddress, Double latitude, Double longitude, String eventImageURL, String userID) {
+    public String getIsPrivate() {
+        return isPrivate;
+    }
+
+    public void setIsPrivate(String isPrivate) {
+        this.isPrivate = isPrivate;
+    }
+
+    public EventsModel(String name, String description, String startDate, String endDate, String eventLocationname, String eventLocationAddress, Double latitude, Double longitude, String eventImageURL, String userID, String isPrivate) {
         this.name = name;
         this.description = description;
         this.startDate = startDate;
@@ -109,5 +118,6 @@ public class EventsModel {
         this.longitude = longitude;
         this.eventImageURL = eventImageURL;
         this.userID = userID;
+        this.isPrivate = isPrivate;
     }
 }

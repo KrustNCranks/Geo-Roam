@@ -89,7 +89,7 @@ public class ExploreMapActivity extends FragmentActivity implements OnMapReadyCa
         getLocationPermission();
 
         // This gets the device location and points it out on the Map
-        getDeviceLocation();
+        // getDeviceLocation();
 
         // This helps you search and navigate to a place
         findPlace();
@@ -331,6 +331,8 @@ public class ExploreMapActivity extends FragmentActivity implements OnMapReadyCa
                 mMap.addMarker(new MarkerOptions().position(customMarkerLocationOne).
                         icon(BitmapDescriptorFactory.fromBitmap(
                                 createCustomMarker(ExploreMapActivity.this, bitmap,eventName))));
+
+                getDeviceLocation();
             }
 
             @Override

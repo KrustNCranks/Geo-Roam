@@ -13,6 +13,7 @@ import com.chathu.georoam.R;
 public class EventPostedActivity extends AppCompatActivity {
     private Button dashboard;
     private Button myPosts;
+    private Button addAgain;
     /**
      * This is the onCreate , when the activity runs, all the code runs in this
      * @param savedInstanceState
@@ -29,6 +30,7 @@ public class EventPostedActivity extends AppCompatActivity {
         // Adding XML Variables to the Controller in order to manipulate them
         dashboard = (Button) findViewById(R.id.dashboardButton);
         myPosts = (Button) findViewById(R.id.myPostsButton);
+        addAgain = (Button) findViewById(R.id.addAgainEventsButton);
 
         // Sends the user back to the dashboard after Posting an image
         dashboard.setOnClickListener(new View.OnClickListener() {
@@ -38,10 +40,19 @@ public class EventPostedActivity extends AppCompatActivity {
             }
         });
 
+        // Sends the user to the My Posts Activity
         myPosts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(EventPostedActivity.this, MyPostsActivity.class));
+            }
+        });
+
+        // Sends the User back to add another Event if needed
+        addAgain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(EventPostedActivity.this,AddEventTextActivity.class));
             }
         });
     }

@@ -92,6 +92,7 @@ public class AddPictureMapActivity extends FragmentActivity implements OnMapRead
                 Double longitude = place.getLatLng().longitude;
                 String name = getIntent().getStringExtra("PictureName");
                 String description = getIntent().getStringExtra("PictureDescription");
+                String isPrivate = getIntent().getStringExtra("Status");
                 //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(locationCoordinates.latitude, locationCoordinates.longitude),15));
                 Intent intent = new Intent( AddPictureMapActivity.this, AddPictureImageActivity.class );
                 intent.putExtra ( "PictureName", name );
@@ -101,6 +102,7 @@ public class AddPictureMapActivity extends FragmentActivity implements OnMapRead
                // intent.putExtra("LocationCoordinates",locationCoordinates);
                 intent.putExtra("Latitude",latitude);
                 intent.putExtra("longitude",longitude);
+                intent.putExtra("Status",isPrivate);
                 startActivity(intent);
             }
         }
