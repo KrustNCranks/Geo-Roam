@@ -89,6 +89,9 @@
         <activity
             android:name=".view.MyPicturesActivity"
             android:label="MyPictures" />
+        <activity
+            android:name=".view.MyEventsActivity"
+            android:label="MyEvents" />
     </application>
 
 </manifest>

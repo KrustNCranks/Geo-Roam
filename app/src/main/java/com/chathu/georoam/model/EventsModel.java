@@ -9,7 +9,8 @@ public class EventsModel {
     private String endDate;
     private String eventLocationname;
     private String eventLocationAddress;
-    private LatLng eventCoordinates;
+    private Double latitude;
+    private Double longitude;
     private String eventImageURL;
     private String userID;
 
@@ -65,12 +66,20 @@ public class EventsModel {
         this.eventLocationAddress = eventLocationAddress;
     }
 
-    public LatLng getEventCoordinates() {
-        return eventCoordinates;
+    public Double getLatitude() {
+        return latitude;
     }
 
-    public void setEventCoordinates(LatLng eventCoordinates) {
-        this.eventCoordinates = eventCoordinates;
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 
     public String getEventImageURL() {
@@ -89,14 +98,15 @@ public class EventsModel {
         this.userID = userID;
     }
 
-    public EventsModel(String name, String description, String startDate, String endDate, String eventLocationname, String eventLocationAddress, LatLng eventCoordinates, String eventImageURL, String userID) {
+    public EventsModel(String name, String description, String startDate, String endDate, String eventLocationname, String eventLocationAddress, Double latitude, Double longitude, String eventImageURL, String userID) {
         this.name = name;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
         this.eventLocationname = eventLocationname;
         this.eventLocationAddress = eventLocationAddress;
-        this.eventCoordinates = eventCoordinates;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.eventImageURL = eventImageURL;
         this.userID = userID;
     }

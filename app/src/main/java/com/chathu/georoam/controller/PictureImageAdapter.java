@@ -15,13 +15,13 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> {
+public class PictureImageAdapter extends RecyclerView.Adapter<PictureImageAdapter.ImageViewHolder> {
 
     private Context mContext;
     private List<Pictures> mPictures;
 
     // Constructor
-    public ImageAdapter(Context context, List<Pictures> pictures){
+    public PictureImageAdapter(Context context, List<Pictures> pictures){
         mContext = context;
         mPictures = pictures;
     }

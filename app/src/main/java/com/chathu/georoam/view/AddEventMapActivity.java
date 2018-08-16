@@ -87,16 +87,24 @@ public class AddEventMapActivity extends FragmentActivity implements OnMapReadyC
                 Place place = PlacePicker.getPlace(data, this);
                 String locationName = place.getName().toString();
                 String locationAddress = place.getAddress().toString();
-                LatLng locationCoordinates = place.getLatLng();
-                String name = getIntent().getStringExtra("PictureName");
-                String description = getIntent().getStringExtra("PictureDescription");
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(locationCoordinates.latitude, locationCoordinates.longitude),15));
+                Double latitude = place.getLatLng().latitude;
+                Double longitude = place.getLatLng().longitude;
+                //LatLng locationCoordinates = place.getLatLng();
+                String name = getIntent().getStringExtra("EventName");
+                String description = getIntent().getStringExtra("EventDescription");
+                String startDate = getIntent().getStringExtra("EventStartDate");
+                String endDate = getIntent().getStringExtra("EventEndDate");
+                //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(locationCoordinates.latitude, locationCoordinates.longitude),15));
                 Intent intent = new Intent( AddEventMapActivity.this, AddEventImageActivity.class );
-                intent.putExtra ( "PictureName", name );
-                intent.putExtra ( "PictureDescription", description);
+                intent.putExtra ( "EventName", name );
+                intent.putExtra ( "EventDescription", description);
+                intent.putExtra("EventStartDate",startDate);
+                intent.putExtra("EventEndDate",endDate);
                 intent.putExtra ( "LocationName", locationName );
                 intent.putExtra ( "LocationAddress", locationAddress );
-                intent.putExtra("LocationCoordinates",locationCoordinates);
+                //intent.putExtra("LocationCoordinates",locationCoordinates);
+                intent.putExtra("latitude",latitude);
+                intent.putExtra("longitude",longitude);
                 startActivity(intent);
             }
         }

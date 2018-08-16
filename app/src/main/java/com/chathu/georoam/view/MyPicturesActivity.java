@@ -10,7 +10,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.chathu.georoam.R;
-import com.chathu.georoam.controller.ImageAdapter;
+import com.chathu.georoam.controller.PictureImageAdapter;
 import com.chathu.georoam.model.Pictures;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,7 +27,7 @@ public class MyPicturesActivity extends AppCompatActivity {
 
     private static final String TAG = "MY PICTURES";
     private RecyclerView mRecyclerView;
-    private ImageAdapter mAdapter;
+    private PictureImageAdapter mAdapter;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener authListen;
@@ -85,7 +85,7 @@ public class MyPicturesActivity extends AppCompatActivity {
                    // Pictures name = ds.child("pictureName").getValue(Pictures.class);
                     mPictures.add(pictures);
                 } */
-                mAdapter = new ImageAdapter(MyPicturesActivity.this,mPictures);
+                mAdapter = new PictureImageAdapter(MyPicturesActivity.this,mPictures);
                 mRecyclerView.setAdapter(mAdapter);
             }
 

@@ -256,7 +256,9 @@ public class AddEventImageActivity extends AppCompatActivity {
                         final String eventEndDate = getIntent().getStringExtra("EventEndDate");
                         final String locationEvent = getIntent().getStringExtra("LocationName");
                         final String locationAddress = getIntent().getStringExtra("LocationAddress");
-                        final LatLng locationCoordinates = getIntent().getExtras().getParcelable("LocationCoordinates");
+                        //final LatLng locationCoordinates = getIntent().getExtras().getParcelable("LocationCoordinates");
+                        final Double latitude = getIntent().getDoubleExtra("latitude",0.00);
+                        final Double longitude = getIntent().getDoubleExtra("longitude",0.00);
                         final String imageUrl = imageUpload.getImageUrl();
                         final String userID = mAuth.getCurrentUser().getUid();
 
@@ -267,13 +269,14 @@ public class AddEventImageActivity extends AppCompatActivity {
                                 eventEndDate,
                                 locationEvent,
                                 locationAddress,
-                                locationCoordinates,
+                                latitude,
+                                longitude,
                                 imageUrl,
                                 userID
                         );
 
                         // This get an instance of the firebase database and uses this instance to post the object to the real time online database
-                        FirebaseDatabase.getInstance().getReference("Event_Post").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        FirebaseDatabase.getInstance().getReference("Event_Post").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).push()
                                 .setValue(event).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
