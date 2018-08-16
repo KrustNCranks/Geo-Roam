@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -52,6 +53,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.List;
 
@@ -246,12 +249,13 @@ public class ExploreMapActivity extends FragmentActivity implements OnMapReadyCa
 
     }
 
-    public static Bitmap createCustomMarker(Context context, @DrawableRes int resource, String _name) {
+    public static Bitmap createCustomMarker(final Context context, Bitmap bmp, final String _name) {
 
-        View marker = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.explore_maps_custom_marker, null);
+        final View marker = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.explore_maps_custom_marker, null);
+
 
         CircleImageView markerImage = (CircleImageView) marker.findViewById(R.id.user_dp);
-        markerImage.setImageResource(resource);
+        markerImage.setImageBitmap(bmp);
         TextView txt_name = (TextView)marker.findViewById(R.id.name);
         txt_name.setText(_name);
 
@@ -264,8 +268,8 @@ public class ExploreMapActivity extends FragmentActivity implements OnMapReadyCa
         Bitmap bitmap = Bitmap.createBitmap(marker.getMeasuredWidth(), marker.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         marker.draw(canvas);
-
         return bitmap;
+
     }
 
     /**
@@ -315,15 +319,35 @@ public class ExploreMapActivity extends FragmentActivity implements OnMapReadyCa
      */
     private void addCustomMarkerOnMap(String name, Double latitude, Double longitude, String eventPictureURL){
 
-        String eventName = name;
-        Double evenLat = latitude;
-        Double eventLong = longitude;
-        String pictureURL = eventPictureURL;
+        final String eventName = name;
+        final Double evenLat = latitude;
+        final Double eventLong = longitude;
+        final String pictureURL = eventPictureURL;
 
-        LatLng customMarkerLocationOne = new LatLng(evenLat, eventLong);
+        Picasso.get().load(pictureURL).into(new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                LatLng customMarkerLocationOne = new LatLng(evenLat, eventLong);
+                mMap.addMarker(new MarkerOptions().position(customMarkerLocationOne).
+                        icon(BitmapDescriptorFactory.fromBitmap(
+                                createCustomMarker(ExploreMapActivity.this, bitmap,eventName))));
+            }
+
+            @Override
+            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        });
+
+        /*LatLng customMarkerLocationOne = new LatLng(evenLat, eventLong);
         mMap.addMarker(new MarkerOptions().position(customMarkerLocationOne).
                 icon(BitmapDescriptorFactory.fromBitmap(
-                        createCustomMarker(ExploreMapActivity.this,R.drawable.postpicture,eventName))));
+                        createCustomMarker(ExploreMapActivity.this,eventPictureURL,eventName))));*/
 
         //When Map Loads Successfully
        /* mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
