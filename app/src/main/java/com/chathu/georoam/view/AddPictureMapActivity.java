@@ -90,12 +90,12 @@ public class AddPictureMapActivity extends FragmentActivity implements OnMapRead
                 //LatLng locationCoordinates = place.getLatLng();
                 Double latitude = place.getLatLng().latitude;
                 Double longitude = place.getLatLng().longitude;
-                String name = getIntent().getStringExtra("EventName");
-                String description = getIntent().getStringExtra("EventDescription");
+                String name = getIntent().getStringExtra("PictureName");
+                String description = getIntent().getStringExtra("PictureDescription");
                 //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(locationCoordinates.latitude, locationCoordinates.longitude),15));
                 Intent intent = new Intent( AddPictureMapActivity.this, AddPictureImageActivity.class );
-                intent.putExtra ( "EventName", name );
-                intent.putExtra ( "EventDescription", description);
+                intent.putExtra ( "PictureName", name );
+                intent.putExtra ( "PictureDescription", description);
                 intent.putExtra ( "LocationName", locationName );
                 intent.putExtra ( "LocationAddress", locationAddress );
                // intent.putExtra("LocationCoordinates",locationCoordinates);

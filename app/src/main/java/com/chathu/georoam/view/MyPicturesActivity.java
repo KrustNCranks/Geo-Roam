@@ -14,6 +14,7 @@ import com.chathu.georoam.controller.PictureImageAdapter;
 import com.chathu.georoam.model.Pictures;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -73,27 +74,39 @@ public class MyPicturesActivity extends AppCompatActivity {
 
         myRef = FirebaseDatabase.getInstance().getReference("Picture_Post").child(userID);
 
-        myRef.addValueEventListener(new ValueEventListener() {
+        myRef.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Pictures pictures = dataSnapshot.getValue(Pictures.class);
                 mPictures.add(pictures);
-
-               /*for (DataSnapshot ds : dataSnapshot.getChildren()){
-                   Pictures pictures = ds.getValue(Pictures.class);
-
-                   // Pictures name = ds.child("pictureName").getValue(Pictures.class);
-                    mPictures.add(pictures);
-                } */
                 mAdapter = new PictureImageAdapter(MyPicturesActivity.this,mPictures);
                 mRecyclerView.setAdapter(mAdapter);
             }
 
             @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                Pictures pictures = dataSnapshot.getValue(Pictures.class);
+                mPictures.add(pictures);
+                mAdapter = new PictureImageAdapter(MyPicturesActivity.this,mPictures);
+                mRecyclerView.setAdapter(mAdapter);
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(MyPicturesActivity.this,databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+
             }
         });
+
 
     }
 }

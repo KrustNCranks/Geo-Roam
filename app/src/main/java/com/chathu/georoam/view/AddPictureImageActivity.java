@@ -276,7 +276,7 @@ public class AddPictureImageActivity extends AppCompatActivity {
 
 
                         // This get an instance of the firebase database and uses this instance to post the object to the real time online database
-                        FirebaseDatabase.getInstance().getReference("Picture_Post").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        FirebaseDatabase.getInstance().getReference("Picture_Post").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).push()
                                 .setValue(pictures).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {

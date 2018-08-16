@@ -91,7 +91,10 @@ public class MyEventsActivity extends AppCompatActivity {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
+                EventsModel eventsModel = dataSnapshot.getValue(EventsModel.class);
+                mEvents.add(eventsModel);
+                mAdapter = new EventImageAdapter(MyEventsActivity.this,mEvents);
+                mRecyclerView.setAdapter(mAdapter);
             }
 
             @Override
