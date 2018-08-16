@@ -88,10 +88,13 @@
             android:label="MyPosts" />
         <activity
             android:name=".view.MyPicturesActivity"
-            android:label="MyPictures" />
+            android:label="My Pictures" />
         <activity
             android:name=".view.MyEventsActivity"
-            android:label="MyEvents" />
+            android:label="My Events" />
+        <activity
+            android:name=".view.ExploreMapActivity"
+            android:label="Explore Map" />
     </application>
 
 </manifest>
