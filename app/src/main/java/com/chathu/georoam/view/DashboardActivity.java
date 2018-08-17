@@ -50,7 +50,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         switch (v.getId()){
             case R.id.mapCard : i = new Intent(this,SearchMapActivity.class);startActivity(i); break;
             case R.id.profileCard : i = new Intent(this,ProfileActivity.class);startActivity(i); break;
-            case R.id.exploreCard : i = new Intent(this, ExploreMapActivity.class);startActivity(i);break;
+            case R.id.exploreCard : i = new Intent(this, ExploreEventsMapActivity.class);startActivity(i);break;
             case R.id.myPostsCard: i = new Intent(this, MyPostsActivity.class);startActivity(i); break;
             case R.id.addPostCard : i = new Intent(this,AddPostActivity.class);startActivity(i); break;
             default: break;

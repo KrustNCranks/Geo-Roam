@@ -93,7 +93,7 @@
             android:name=".view.MyEventsActivity"
             android:label="My Events" />
         <activity
-            android:name=".view.ExploreMapActivity"
+            android:name=".view.ExploreEventsMapActivity"
             android:label="Explore Map" />
     </application>
 

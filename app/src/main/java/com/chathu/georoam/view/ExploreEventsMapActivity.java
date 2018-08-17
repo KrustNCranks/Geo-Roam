@@ -5,15 +5,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -35,14 +30,12 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -56,11 +49,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
-import java.util.List;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ExploreMapActivity extends FragmentActivity implements OnMapReadyCallback {
+public class ExploreEventsMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final String TAG = "MapsActivityController";
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
@@ -89,7 +80,7 @@ public class ExploreMapActivity extends FragmentActivity implements OnMapReadyCa
         getLocationPermission();
 
         // This gets the device location and points it out on the Map
-        // getDeviceLocation();
+        getDeviceLocation();
 
         // This helps you search and navigate to a place
         findPlace();
@@ -167,12 +158,12 @@ public class ExploreMapActivity extends FragmentActivity implements OnMapReadyCa
                             Location currentLocation = (Location) task.getResult();
                             mMap.setMyLocationEnabled(true);
                             mMap.getUiSettings().setMyLocationButtonEnabled(true);
-                            //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),15));
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),8));
                         }
                         else
                         {
                             Log.e(TAG, "onComplete: LOCATION NOT FOUND");
-                            Toast.makeText(ExploreMapActivity.this, "Location Could Not Be Found!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ExploreEventsMapActivity.this, "Location Could Not Be Found!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -330,9 +321,7 @@ public class ExploreMapActivity extends FragmentActivity implements OnMapReadyCa
                 LatLng customMarkerLocationOne = new LatLng(evenLat, eventLong);
                 mMap.addMarker(new MarkerOptions().position(customMarkerLocationOne).
                         icon(BitmapDescriptorFactory.fromBitmap(
-                                createCustomMarker(ExploreMapActivity.this, bitmap,eventName))));
-
-                getDeviceLocation();
+                                createCustomMarker(ExploreEventsMapActivity.this, bitmap,eventName))));
             }
 
             @Override
@@ -349,7 +338,7 @@ public class ExploreMapActivity extends FragmentActivity implements OnMapReadyCa
         /*LatLng customMarkerLocationOne = new LatLng(evenLat, eventLong);
         mMap.addMarker(new MarkerOptions().position(customMarkerLocationOne).
                 icon(BitmapDescriptorFactory.fromBitmap(
-                        createCustomMarker(ExploreMapActivity.this,eventPictureURL,eventName))));*/
+                        createCustomMarker(ExploreEventsMapActivity.this,eventPictureURL,eventName))));*/
 
         //When Map Loads Successfully
        /* mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
@@ -362,14 +351,14 @@ public class ExploreMapActivity extends FragmentActivity implements OnMapReadyCa
 
                 mMap.addMarker(new MarkerOptions().position(customMarkerLocationOne).
                         icon(BitmapDescriptorFactory.fromBitmap(
-                                createCustomMarker(ExploreMapActivity.this,R.drawable.profilepicture,eventName))));
+                                createCustomMarker(ExploreEventsMapActivity.this,R.drawable.profilepicture,eventName))));
                 /*mMap.addMarker(new MarkerOptions().position(customMarkerLocationTwo).
                         icon(BitmapDescriptorFactory.fromBitmap(
-                                createCustomMarker(ExploreMapActivity.this,R.drawable.profilepicture,"Mary Jane"))));
+                                createCustomMarker(ExploreEventsMapActivity.this,R.drawable.profilepicture,"Mary Jane"))));
 
                 /mMap.addMarker(new MarkerOptions().position(customMarkerLocationThree).
                         icon(BitmapDescriptorFactory.fromBitmap(
-                                createCustomMarker(ExploreMapActivity.this,R.drawable.profilepicture,"Janet John"))));
+                                createCustomMarker(ExploreEventsMapActivity.this,R.drawable.profilepicture,"Janet John"))));
 
                 //LatLngBound will cover all your marker on Google Maps
                 LatLngBounds.Builder builder = new LatLngBounds.Builder();

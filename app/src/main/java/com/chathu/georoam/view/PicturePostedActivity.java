@@ -54,7 +54,7 @@ public class PicturePostedActivity extends AppCompatActivity {
         addAgain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(PicturePostedActivity.this,AddEventTextActivity.class));
+                startActivity(new Intent(PicturePostedActivity.this,AddPictureTextActivity.class));
             }
         });
     }
