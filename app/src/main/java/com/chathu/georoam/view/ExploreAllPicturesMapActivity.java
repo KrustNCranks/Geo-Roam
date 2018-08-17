@@ -3,17 +3,13 @@ package com.chathu.georoam.view;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,11 +19,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chathu.georoam.R;
+import com.chathu.georoam.controller.DeviceLocatorController;
 import com.chathu.georoam.controller.PermissionsController;
 import com.chathu.georoam.model.EventsModel;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
@@ -38,8 +34,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -47,13 +41,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ExploreAllEventsMapActivity extends FragmentActivity implements OnMapReadyCallback {
+public class ExploreAllPicturesMapActivity extends FragmentActivity implements OnMapReadyCallback {
     private static final String TAG = "MapsActivityController";
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
@@ -66,7 +59,6 @@ public class ExploreAllEventsMapActivity extends FragmentActivity implements OnM
     private FirebaseAuth.AuthStateListener authListen;
     private DatabaseReference myRef;
     private String userID;
-
     /**
      * this is the onCreate function for the Maps Activity, once the activity loads this sets up a fragment and starts loading
      * the map
@@ -78,10 +70,13 @@ public class ExploreAllEventsMapActivity extends FragmentActivity implements OnM
         setContentView(R.layout.search_map_activity);
 
         // This get Location permissions and initializes the map
-        getLocationPermission();
+        PermissionsController perms = new PermissionsController();
+        if (perms.getLocationPermission(ExploreAllPicturesMapActivity.this))
+        {
+            permission_granted = true;
+            initMap();
+        }
 
-        // This gets the device location and points it out on the Map
-        getDeviceLocation();
 
         // This helps you search and navigate to a place
         findPlace();
@@ -91,7 +86,7 @@ public class ExploreAllEventsMapActivity extends FragmentActivity implements OnM
         mAuth = FirebaseAuth.getInstance();
 
         // Setting the Firebase References
-        myRef = FirebaseDatabase.getInstance().getReference("Event_Post_Public");
+        myRef = FirebaseDatabase.getInstance().getReference("Picture_Post_Public");
 
         // Get userID
         FirebaseUser user = mAuth.getCurrentUser();
@@ -135,63 +130,15 @@ public class ExploreAllEventsMapActivity extends FragmentActivity implements OnM
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+
+        /**
+         * This Will call the Device Locator Controller and gets the device's locations and moves the
+         * camera to the current location
+         */
+        DeviceLocatorController deviceLocatorController = new DeviceLocatorController();
+        deviceLocatorController.getDeviceLocation(ExploreAllPicturesMapActivity.this, permission_granted,mMap);
         retrieveData();
 
-    }
-
-    /**
-     * This Funtions gets the device's locations and moves the camera to the current location
-     */
-    private void getDeviceLocation(){
-        Log.d(TAG,"getDeviceLocation(): TRYING TO GET DEVICE LOCATION");
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        try{
-            if(permission_granted){
-                Task location = mFusedLocationProviderClient.getLastLocation();
-                location.addOnCompleteListener(new OnCompleteListener() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                        if(task.isSuccessful()){
-                            Log.d(TAG,"getDeviceLocation(): LOCATION HAS BEEN FOUND");
-                            Location currentLocation = (Location) task.getResult();
-                            mMap.setMyLocationEnabled(true);
-                            mMap.getUiSettings().setMyLocationButtonEnabled(true);
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),8));
-                        }
-                        else
-                        {
-                            Log.e(TAG, "onComplete: LOCATION NOT FOUND");
-                            Toast.makeText(ExploreAllEventsMapActivity.this, "Location Could Not Be Found!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-            }
-        }catch (SecurityException e){
-            Log.e(TAG,"Security Exception: "+e.getMessage());
-        }
-    }
-
-    /**
-     * This get user permission to access the device location and internet permissions as well and then initializes the map
-     */
-    private void getLocationPermission(){
-        Log.d(TAG,"getLocationPermission: ASKING FOR LOCATION PERMISSIONS");
-        String[] permissions = {FINE_LOCATION, COARSE_LOCATION};
-
-        if(ContextCompat.checkSelfPermission(this.getApplicationContext(),FINE_LOCATION)== PackageManager.PERMISSION_GRANTED){
-            if(ContextCompat.checkSelfPermission(this.getApplicationContext(),COARSE_LOCATION)== PackageManager.PERMISSION_GRANTED){
-                Log.d(TAG,"getLocationPermission: BOTH PERMISSIONS GRANTED");
-                permission_granted = true;
-                // This Calls the function that initializes the map
-                initMap();
-            }else{
-                Log.e(TAG,"getLocationPermission: PERMISSIONS NOT GRANTED");
-                ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
-            }
-        }else{
-            Log.e(TAG,"getLocationPermission: PERMISSIONS NOT GRANTED");
-            ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
-        }
     }
 
     /**
@@ -238,7 +185,6 @@ public class ExploreAllEventsMapActivity extends FragmentActivity implements OnM
 
     }
 
-
     /**
      * This is the function creates the custom marker and places it on the map
      * @param context
@@ -274,14 +220,13 @@ public class ExploreAllEventsMapActivity extends FragmentActivity implements OnM
      * that adds the markers on the map
      */
     private void retrieveData(){
-       myRef = FirebaseDatabase.getInstance().getReference("Event_Post_Public").child("public_pictures");
+        myRef = FirebaseDatabase.getInstance().getReference("Picture_Post_Public").child("public_pictures");
 
-       myRef.addChildEventListener(new ChildEventListener() {
+        myRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
                     EventsModel eventsModel = dataSnapshot.getValue(EventsModel.class);
-                    System.out.println(eventsModel.getName());
                     addCustomMarkerOnMap(eventsModel.getName(), eventsModel.getLatitude(),eventsModel.getLongitude(),eventsModel.getEventImageURL());
                 }
 
@@ -289,7 +234,7 @@ public class ExploreAllEventsMapActivity extends FragmentActivity implements OnM
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                System.out.println("test");
+
             }
 
             @Override
@@ -328,7 +273,7 @@ public class ExploreAllEventsMapActivity extends FragmentActivity implements OnM
                 LatLng customMarkerLocationOne = new LatLng(evenLat, eventLong);
                 mMap.addMarker(new MarkerOptions().position(customMarkerLocationOne).
                         icon(BitmapDescriptorFactory.fromBitmap(
-                                createCustomMarker(ExploreAllEventsMapActivity.this, bitmap,eventName))));
+                                createCustomMarker(ExploreAllPicturesMapActivity.this, bitmap,eventName))));
             }
 
             @Override

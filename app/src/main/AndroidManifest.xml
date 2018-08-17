@@ -104,6 +104,9 @@
         <activity
             android:name=".view.ExploreAllEventsMapActivity"
             android:label="Explore All Events" />
+        <activity
+            android:name=".view.ExploreAllPicturesMapActivity"
+            android:label="Explore All Pictures" />
     </application>
 
 </manifest>
