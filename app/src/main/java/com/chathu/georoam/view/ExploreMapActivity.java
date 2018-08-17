@@ -15,6 +15,8 @@ public class ExploreMapActivity extends AppCompatActivity {
     private ImageView cancel;
     private Button myEvents;
     private Button myPictures;
+    private Button allEvents;
+    private Button allPictures;
 
     /**
      * this is the onCreate function for the Maps Activity, once the activity loads this sets up a fragment and starts loading
@@ -34,6 +36,7 @@ public class ExploreMapActivity extends AppCompatActivity {
         cancel = (ImageView) findViewById(R.id.cancel);
         myEvents = (Button) findViewById(R.id.myEventsButton);
         myPictures = (Button) findViewById(R.id.myPicturesButton);
+        allEvents = (Button) findViewById(R.id.exploreEventsButton);
 
         // OnClick event for the cancel Button takes us back to the Dashboard
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -51,11 +54,19 @@ public class ExploreMapActivity extends AppCompatActivity {
             }
         });
 
-        // OnClick even to load myPictures
+        // OnClick events to load myPictures
         myPictures.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(ExploreMapActivity.this, ExplorePicturesMapActivity.class));
+            }
+        });
+
+        // OnClick event to load all Events
+        allEvents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ExploreMapActivity.this, ExploreAllEventsMapActivity.class));
             }
         });
     }
