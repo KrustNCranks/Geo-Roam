@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chathu.georoam.R;
+import com.chathu.georoam.controller.PermissionsController;
 import com.chathu.georoam.model.EventsModel;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -76,8 +77,14 @@ public class ExploreEventsMapActivity extends FragmentActivity implements OnMapR
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_map_activity);
 
+
         // This get Location permissions and initializes the map
-        getLocationPermission();
+        PermissionsController perms = new PermissionsController();
+        if (perms.getLocationPermission(ExploreEventsMapActivity.this))
+        {
+            permission_granted = true;
+            initMap();
+        }
 
         // This gets the device location and points it out on the Map
         getDeviceLocation();
@@ -116,6 +123,8 @@ public class ExploreEventsMapActivity extends FragmentActivity implements OnMapR
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
 
     }
 
@@ -168,28 +177,7 @@ public class ExploreEventsMapActivity extends FragmentActivity implements OnMapR
         }
     }
 
-    /**
-     * This get user permission to access the device location and internet permissions as well and then initializes the map
-     */
-    private void getLocationPermission(){
-        Log.d(TAG,"getLocationPermission: ASKING FOR LOCATION PERMISSIONS");
-        String[] permissions = {FINE_LOCATION, COARSE_LOCATION};
 
-        if(ContextCompat.checkSelfPermission(this.getApplicationContext(),FINE_LOCATION)== PackageManager.PERMISSION_GRANTED){
-            if(ContextCompat.checkSelfPermission(this.getApplicationContext(),COARSE_LOCATION)== PackageManager.PERMISSION_GRANTED){
-                Log.d(TAG,"getLocationPermission: BOTH PERMISSIONS GRANTED");
-                permission_granted = true;
-                // This Calls the function that initializes the map
-                initMap();
-            }else{
-                Log.e(TAG,"getLocationPermission: PERMISSIONS NOT GRANTED");
-                ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
-            }
-        }else{
-            Log.e(TAG,"getLocationPermission: PERMISSIONS NOT GRANTED");
-            ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
-        }
-    }
 
     /**
      * This function uses the search bar and finds places within the maps fragment and navigates to the point using the moveCamera() function
