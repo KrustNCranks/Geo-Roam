@@ -285,7 +285,7 @@ public class AddEventImageActivity extends AppCompatActivity {
                         );
 
                         if (isPrivate.equals(isPublic)){
-                            FirebaseDatabase.getInstance().getReference("Event_Post_Public").push().setValue(event).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            FirebaseDatabase.getInstance().getReference("Event_Post_Public").child("public_pictures").push().setValue(event).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){

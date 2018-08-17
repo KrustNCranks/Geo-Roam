@@ -47,6 +47,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -88,6 +89,8 @@ public class ExploreAllEventsMapActivity extends FragmentActivity implements OnM
 
         // Access the Firebase Auth instance
         mAuth = FirebaseAuth.getInstance();
+
+        myRef = FirebaseDatabase.getInstance().getReference("Event_Post_Public");
 
         // Get userID
         FirebaseUser user = mAuth.getCurrentUser();
@@ -270,13 +273,14 @@ public class ExploreAllEventsMapActivity extends FragmentActivity implements OnM
      * that adds the markers on the map
      */
     private void retrieveData(){
-        myRef = FirebaseDatabase.getInstance().getReference("Event_Post_Public");
+       myRef = FirebaseDatabase.getInstance().getReference("Event_Post_Public").child("public_pictures");
 
-        myRef.addChildEventListener(new ChildEventListener() {
+       myRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
                     EventsModel eventsModel = dataSnapshot.getValue(EventsModel.class);
+                    System.out.println(eventsModel.getName());
                     addCustomMarkerOnMap(eventsModel.getName(), eventsModel.getLatitude(),eventsModel.getLongitude(),eventsModel.getEventImageURL());
                 }
 
@@ -284,7 +288,7 @@ public class ExploreAllEventsMapActivity extends FragmentActivity implements OnM
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
+                System.out.println("test");
             }
 
             @Override

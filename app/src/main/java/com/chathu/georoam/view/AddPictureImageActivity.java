@@ -281,7 +281,7 @@ public class AddPictureImageActivity extends AppCompatActivity {
 
                         if(isPrivate.equals(isPublic)){
                             // This get an instance of the firebase database and uses this instance to post the object to the real time online database
-                            FirebaseDatabase.getInstance().getReference("Picture_Post_Public").push()
+                            FirebaseDatabase.getInstance().getReference("Picture_Post_Public").child("public_pictures").push()
                                     .setValue(pictures).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
