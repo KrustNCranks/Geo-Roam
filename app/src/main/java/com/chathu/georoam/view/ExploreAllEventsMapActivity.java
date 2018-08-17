@@ -270,7 +270,7 @@ public class ExploreAllEventsMapActivity extends FragmentActivity implements OnM
      * that adds the markers on the map
      */
     private void retrieveData(){
-        myRef = FirebaseDatabase.getInstance().getReference("Event_Post").child(userID);
+        myRef = FirebaseDatabase.getInstance().getReference("Event_Post_Public");
 
         myRef.addChildEventListener(new ChildEventListener() {
             @Override

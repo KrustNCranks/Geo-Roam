@@ -263,6 +263,8 @@ public class AddPictureImageActivity extends AppCompatActivity {
                         final String isPrivate = getIntent().getStringExtra("Status");
                         final String imageUrl = imageUpload.getImageUrl();
                         final String userID = mAuth.getCurrentUser().getUid();
+                        String isPublic = "public";
+                        String isitPrivate = "private";
 
                         Pictures pictures = new Pictures(
                                 pictureName,
@@ -277,6 +279,43 @@ public class AddPictureImageActivity extends AppCompatActivity {
                         );
 
 
+                        if(isPrivate.equals(isPublic)){
+                            // This get an instance of the firebase database and uses this instance to post the object to the real time online database
+                            FirebaseDatabase.getInstance().getReference("Picture_Post_Public").push()
+                                    .setValue(pictures).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        // If successfull this will navigate to the get started page
+                                        Toast.makeText(AddPictureImageActivity.this, "PICTURE POSTED",Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(AddPictureImageActivity.this, PicturePostedActivity.class));
+                                    } else {
+                                        // If Fail, it will display and error message as a toast
+
+                                        Toast.makeText(AddPictureImageActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+
+                                    }
+                                }
+                            });
+                        }else if (isPrivate.equals(isitPrivate)){
+                            // This get an instance of the firebase database and uses this instance to post the object to the real time online database
+                            FirebaseDatabase.getInstance().getReference("Picture_Post").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).push()
+                                    .setValue(pictures).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        // If successfull this will navigate to the get started page
+                                        Toast.makeText(AddPictureImageActivity.this, "PICTURE POSTED",Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(AddPictureImageActivity.this, PicturePostedActivity.class));
+                                    } else {
+                                        // If Fail, it will display and error message as a toast
+
+                                        Toast.makeText(AddPictureImageActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+
+                                    }
+                                }
+                            });
+                        }
                         // This get an instance of the firebase database and uses this instance to post the object to the real time online database
                         FirebaseDatabase.getInstance().getReference("Picture_Post").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).push()
                                 .setValue(pictures).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -294,6 +333,7 @@ public class AddPictureImageActivity extends AppCompatActivity {
                                 }
                             }
                         });
+
                     }
                 }
             }).addOnFailureListener(new OnFailureListener() {

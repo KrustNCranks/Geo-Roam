@@ -25,7 +25,7 @@ public class PermissionsController {
     /**
      * This will check read write permissions
      */
-    public boolean checkPermission(Activity page) {
+    public boolean checkStoragePermission(Activity page) {
         Log.d(TAG, "getFilePermission: ASKING FOR STORAGE PERMISSIONS");
         String[] permissions = {WRITE_PERMISSION, READ_PERMISSION};
 

@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.chathu.georoam.R;
+import com.chathu.georoam.controller.PermissionsController;
 import com.chathu.georoam.model.EventsModel;
 import com.chathu.georoam.model.UserEventUpload;
 import com.google.android.gms.maps.model.LatLng;
@@ -79,6 +80,8 @@ public class AddEventImageActivity extends AppCompatActivity {
         eventImage = (ImageView) findViewById(R.id.eventImage);
         addEvent = (Button) findViewById(R.id.addEventButton);
         cancel = (Button) findViewById(R.id.cancelEventButton);
+
+
 
         // Access the Firebase Auth instance
         mAuth = FirebaseAuth.getInstance();
@@ -174,6 +177,9 @@ public class AddEventImageActivity extends AppCompatActivity {
      */
     private void chooseImage(){
         //checkPermission();
+        // Checks For Permission
+        PermissionsController perms = new PermissionsController();
+        perms.checkStoragePermission(AddEventImageActivity.this);
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
         startActivityForResult(intent.createChooser(intent,"Choose your Picture"),PICK_IMAGE_REQUEST);
@@ -211,6 +217,7 @@ public class AddEventImageActivity extends AppCompatActivity {
      * @return
      */
     private String getFileTypeExtension(Uri uri){
+        ContentResolver cr = getContentResolver();
         ContentResolver contentResolver = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(contentResolver.getType(uri));
@@ -221,8 +228,6 @@ public class AddEventImageActivity extends AppCompatActivity {
      * along with the other event information to the Firebase Realtime Database
      */
     private void uploadEventDetails(){
-
-
         if(filePath != null)
         {
             final ProgressDialog progressDialog = new ProgressDialog(this);
@@ -261,7 +266,9 @@ public class AddEventImageActivity extends AppCompatActivity {
                         final Double longitude = getIntent().getDoubleExtra("longitude",0.00);
                         final String imageUrl = imageUpload.getImageUrl();
                         final String userID = mAuth.getCurrentUser().getUid();
-                        final String isPrivate = getIntent().getStringExtra("Status");
+                        String isPrivate = getIntent().getStringExtra("Status");
+                        String isPublic = "public";
+                        String isitPrivate = "private";
 
                         final EventsModel event = new EventsModel(
                                 eventName,
@@ -277,6 +284,38 @@ public class AddEventImageActivity extends AppCompatActivity {
                                 isPrivate
                         );
 
+                        if (isPrivate.equals(isPublic)){
+                            FirebaseDatabase.getInstance().getReference("Event_Post_Public").push().setValue(event).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()){
+                                        Toast.makeText(AddEventImageActivity.this, "EVENT CREATED",Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(AddEventImageActivity.this, EventPostedActivity.class));
+                                    }else{
+                                        // If Fail, it will display and error message as a toast
+
+                                        Toast.makeText(AddEventImageActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            });
+                        }else if (isPrivate.equals(isitPrivate)){
+                            // This get an instance of the firebase database and uses this instance to post the object to the real time online database
+                            FirebaseDatabase.getInstance().getReference("Event_Post").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).push()
+                                    .setValue(event).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        // If successfull this will navigate to the get started page
+                                        Toast.makeText(AddEventImageActivity.this, "EVENT CREATED",Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(AddEventImageActivity.this, EventPostedActivity.class));
+                                    } else {
+                                        // If Fail, it will display and error message as a toast
+                                        Toast.makeText(AddEventImageActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            });
+                        }
+
                         // This get an instance of the firebase database and uses this instance to post the object to the real time online database
                         FirebaseDatabase.getInstance().getReference("Event_Post").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).push()
                                 .setValue(event).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -288,21 +327,19 @@ public class AddEventImageActivity extends AppCompatActivity {
                                     startActivity(new Intent(AddEventImageActivity.this, EventPostedActivity.class));
                                 } else {
                                     // If Fail, it will display and error message as a toast
-
                                     Toast.makeText(AddEventImageActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
-
                                 }
                             }
                         });
                     }
                 }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    progressDialog.dismiss();
-                    Toast.makeText(AddEventImageActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
+                    }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(AddEventImageActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
 
 
         }
