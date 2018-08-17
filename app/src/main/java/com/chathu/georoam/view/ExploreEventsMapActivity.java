@@ -132,11 +132,6 @@ public class ExploreEventsMapActivity extends FragmentActivity implements OnMapR
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        /*// Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney)); */
-
        retrieveData();
 
     }
@@ -240,6 +235,14 @@ public class ExploreEventsMapActivity extends FragmentActivity implements OnMapR
 
     }
 
+
+    /**
+     * This is the function creates the custom marker and places it on the map
+     * @param context
+     * @param bmp
+     * @param _name
+     * @return
+     */
     public static Bitmap createCustomMarker(final Context context, Bitmap bmp, final String _name) {
 
         final View marker = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.explore_maps_custom_marker, null);
@@ -335,41 +338,7 @@ public class ExploreEventsMapActivity extends FragmentActivity implements OnMapR
             }
         });
 
-        /*LatLng customMarkerLocationOne = new LatLng(evenLat, eventLong);
-        mMap.addMarker(new MarkerOptions().position(customMarkerLocationOne).
-                icon(BitmapDescriptorFactory.fromBitmap(
-                        createCustomMarker(ExploreEventsMapActivity.this,eventPictureURL,eventName))));*/
 
-        //When Map Loads Successfully
-       /* mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
-            @Override
-            public void onMapLoaded() {
-
-                LatLng customMarkerLocationOne = new LatLng(evenLat, eventLong);
-                //LatLng customMarkerLocationTwo = new LatLng(evenLat, eventLong);
-                //LatLng customMarkerLocationThree = new LatLng(6.9200, 79.8500);
-
-                mMap.addMarker(new MarkerOptions().position(customMarkerLocationOne).
-                        icon(BitmapDescriptorFactory.fromBitmap(
-                                createCustomMarker(ExploreEventsMapActivity.this,R.drawable.profilepicture,eventName))));
-                /*mMap.addMarker(new MarkerOptions().position(customMarkerLocationTwo).
-                        icon(BitmapDescriptorFactory.fromBitmap(
-                                createCustomMarker(ExploreEventsMapActivity.this,R.drawable.profilepicture,"Mary Jane"))));
-
-                /mMap.addMarker(new MarkerOptions().position(customMarkerLocationThree).
-                        icon(BitmapDescriptorFactory.fromBitmap(
-                                createCustomMarker(ExploreEventsMapActivity.this,R.drawable.profilepicture,"Janet John"))));
-
-                //LatLngBound will cover all your marker on Google Maps
-                LatLngBounds.Builder builder = new LatLngBounds.Builder();
-                builder.include(customMarkerLocationOne); //Taking Point A (First LatLng)
-                //builder.include(customMarkerLocationThree); //Taking Point B (Second LatLng)
-                LatLngBounds bounds = builder.build();
-                CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 200);
-                mMap.moveCamera(cu);
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(14), 2000, null);
-            }
-        }); */
     }
 
 }

@@ -94,6 +94,12 @@
             android:label="My Events" />
         <activity
             android:name=".view.ExploreEventsMapActivity"
+            android:label="Explore Map Events" />
+        <activity
+            android:name=".view.ExplorePicturesMapActivity"
+            android:label="Explore Map Pictures" />
+        <activity
+            android:name=".view.ExploreMapActivity"
             android:label="Explore Map" />
     </application>
 
