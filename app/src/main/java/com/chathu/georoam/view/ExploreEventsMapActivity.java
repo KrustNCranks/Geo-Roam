@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chathu.georoam.R;
+import com.chathu.georoam.controller.DeviceLocatorController;
 import com.chathu.georoam.controller.PermissionsController;
 import com.chathu.georoam.model.EventsModel;
 import com.google.android.gms.common.api.Status;
@@ -86,12 +87,8 @@ public class ExploreEventsMapActivity extends FragmentActivity implements OnMapR
             initMap();
         }
 
-        // This gets the device location and points it out on the Map
-        getDeviceLocation();
-
         // This helps you search and navigate to a place
         findPlace();
-
 
         // Access the Firebase Auth instance
         mAuth = FirebaseAuth.getInstance();
@@ -141,42 +138,15 @@ public class ExploreEventsMapActivity extends FragmentActivity implements OnMapR
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        /**
+         * This Will call the Device Locator Controller and gets the device's locations and moves the
+         * camera to the current location
+         */
+        DeviceLocatorController deviceLocatorController = new DeviceLocatorController();
+        deviceLocatorController.getExploreDeviceLocation(ExploreEventsMapActivity.this, permission_granted,mMap);
        retrieveData();
 
     }
-
-    /**
-     * This Funtions gets the device's locations and moves the camera to the current location
-     */
-    private void getDeviceLocation(){
-        Log.d(TAG,"getDeviceLocation(): TRYING TO GET DEVICE LOCATION");
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        try{
-            if(permission_granted){
-                Task location = mFusedLocationProviderClient.getLastLocation();
-                location.addOnCompleteListener(new OnCompleteListener() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                        if(task.isSuccessful()){
-                            Log.d(TAG,"getDeviceLocation(): LOCATION HAS BEEN FOUND");
-                            Location currentLocation = (Location) task.getResult();
-                            mMap.setMyLocationEnabled(true);
-                            mMap.getUiSettings().setMyLocationButtonEnabled(true);
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),8));
-                        }
-                        else
-                        {
-                            Log.e(TAG, "onComplete: LOCATION NOT FOUND");
-                            Toast.makeText(ExploreEventsMapActivity.this, "Location Could Not Be Found!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-            }
-        }catch (SecurityException e){
-            Log.e(TAG,"Security Exception: "+e.getMessage());
-        }
-    }
-
 
 
     /**

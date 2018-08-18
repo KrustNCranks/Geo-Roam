@@ -11,8 +11,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.chathu.georoam.R;
+import com.chathu.georoam.controller.ValidationController;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -22,6 +24,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText email;
     private EditText username;
     private EditText password;
+    private EditText password_confirm;
     private Button register;
     private ImageView back;
     private ProgressBar progressBar;
@@ -29,6 +32,9 @@ public class RegisterActivity extends AppCompatActivity {
 
     // Used for Firebase Authentication
     private FirebaseAuth mAuth;
+
+    // Create a new instance of the Validation controller
+    private ValidationController validator = ValidationController.getInstance();
 
     /**
      * This is the onCreate , when the activity runs, all the code runs in this
@@ -48,6 +54,7 @@ public class RegisterActivity extends AppCompatActivity {
         email = (EditText) findViewById(R.id.emailTxt);
         username = (EditText) findViewById(R.id.userTxt);
         password = (EditText) findViewById(R.id.passTxt);
+        password_confirm = (EditText) findViewById(R.id.passTxt2);
         register = (Button) findViewById(R.id.registerButton);
         back = (ImageView) findViewById(R.id.backButton);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -82,12 +89,37 @@ public class RegisterActivity extends AppCompatActivity {
      * directory and then pass it along as a object to the RealTime Database, note: DO NOT USE FIRESTORE UNTIL IT COMES OUT OF BETA
      */
     private void createAccount(){
-        Intent intent = new Intent ( RegisterActivity.this, RegisterFinalActivity.class );
-        intent.putExtra ( "Name", name.getText().toString().trim() );
-        intent.putExtra ( "Email", email.getText().toString().trim() );
-        intent.putExtra ( "Username", username.getText().toString().trim() );
-        intent.putExtra ( "Password", password.getText().toString().trim() );
-        startActivity(intent);
+        if(!validator.isEmpty(name.getText().toString())){
+            if((!validator.isEmpty(email.getText().toString())) && (validator.isEmail(email.getText().toString()))){
+                if(!validator.isEmpty(username.getText().toString())){
+                    if(!validator.isEmpty(password.getText().toString())){
+                        if(validator.confirm(password.getText().toString(),password_confirm.getText().toString())){
+                            Intent intent = new Intent ( RegisterActivity.this, RegisterFinalActivity.class );
+                            intent.putExtra ( "Name", name.getText().toString().trim() );
+                            intent.putExtra ( "Email", email.getText().toString().trim() );
+                            intent.putExtra ( "Username", username.getText().toString().trim() );
+                            intent.putExtra ( "Password", password.getText().toString().trim() );
+                            startActivity(intent);
+                        }else{
+                            Toast.makeText(RegisterActivity.this,"Passwords do no match",Toast.LENGTH_SHORT).show();
+                        }
+                    }else{
+                        Toast.makeText(RegisterActivity.this,"Please Enter a PASSWORD",Toast.LENGTH_SHORT).show();
+                    }
+
+                }else{
+                    Toast.makeText(RegisterActivity.this,"Please Enter a USERNAME",Toast.LENGTH_SHORT).show();
+                }
+
+            }else{
+                Toast.makeText(RegisterActivity.this,"Please Enter a Valid EMAIL",Toast.LENGTH_SHORT).show();
+            }
+
+        }else
+        {
+            Toast.makeText(RegisterActivity.this,"Name Field Cannot Be Empty",Toast.LENGTH_SHORT).show();
+        }
+
 
         Log.d(TAG,  "createAccount(): name: "+name.getText().toString());
         Log.d(TAG, "email: "+email.getText().toString());

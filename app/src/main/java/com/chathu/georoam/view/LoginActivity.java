@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chathu.georoam.R;
+import com.chathu.georoam.controller.ValidationController;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -34,6 +35,8 @@ public class LoginActivity extends AppCompatActivity{
 
     // Used for Firebase Authentication
     private FirebaseAuth mAuth;
+
+    private ValidationController validator = ValidationController.getInstance();
 
 
     /**
@@ -127,26 +130,31 @@ public class LoginActivity extends AppCompatActivity{
      * from the ones sent above
      */
     public void login(String email, String password){
-        progressBar.setVisibility(View.VISIBLE);
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        progressBar.setVisibility(View.GONE);
-                        if (task.isSuccessful()) {
-                            // Sign in success, navigates to the dashboard
-                            Log.d(TAG, "signInWithEmail:success");
-                            startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
-                        } else {
+        if(validator.isEmail(email)){
+            progressBar.setVisibility(View.VISIBLE);
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
                             progressBar.setVisibility(View.GONE);
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
+                            if (task.isSuccessful()) {
+                                // Sign in success, navigates to the dashboard
+                                Log.d(TAG, "signInWithEmail:success");
+                                startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
+                            } else {
+                                progressBar.setVisibility(View.GONE);
+                                // If sign in fails, display a message to the user.
+                                Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
 
-                    }
-                });
+                        }
+                    });
+        }else{
+            Toast.makeText(LoginActivity.this,"EMAIL IS WRONG", Toast.LENGTH_SHORT).show();
+        }
+
 
 
     }

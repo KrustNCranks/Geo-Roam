@@ -53,4 +53,37 @@ public class DeviceLocatorController {
             Log.e(TAG,"Security Exception: "+e.getMessage());
         }
     }
+
+
+    /**
+     * This Funtions gets the device's locations and moves the camera to the current location for the Explore Maps
+     */
+    public void getExploreDeviceLocation(final Activity page, Boolean permission_granted, final GoogleMap mMap){
+        Log.d(TAG,"getDeviceLocation(): TRYING TO GET DEVICE LOCATION");
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(page);
+        try{
+            if(permission_granted){
+                Task location = mFusedLocationProviderClient.getLastLocation();
+                location.addOnCompleteListener(new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        if(task.isSuccessful()){
+                            Log.d(TAG,"getDeviceLocation(): LOCATION HAS BEEN FOUND");
+                            Location currentLocation = (Location) task.getResult();
+                            mMap.setMyLocationEnabled(true);
+                            mMap.getUiSettings().setMyLocationButtonEnabled(true);
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),10));
+                        }
+                        else
+                        {
+                            Log.e(TAG, "onComplete: LOCATION NOT FOUND");
+                            Toast.makeText(page, "Location Could Not Be Found!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        }catch (SecurityException e){
+            Log.e(TAG,"Security Exception: "+e.getMessage());
+        }
+    }
 }

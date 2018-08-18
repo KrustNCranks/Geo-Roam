@@ -22,6 +22,7 @@ import com.chathu.georoam.R;
 import com.chathu.georoam.controller.DeviceLocatorController;
 import com.chathu.georoam.controller.PermissionsController;
 import com.chathu.georoam.model.EventsModel;
+import com.chathu.georoam.model.Pictures;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.places.Place;
@@ -136,7 +137,7 @@ public class ExploreAllPicturesMapActivity extends FragmentActivity implements O
          * camera to the current location
          */
         DeviceLocatorController deviceLocatorController = new DeviceLocatorController();
-        deviceLocatorController.getDeviceLocation(ExploreAllPicturesMapActivity.this, permission_granted,mMap);
+        deviceLocatorController.getExploreDeviceLocation(ExploreAllPicturesMapActivity.this, permission_granted,mMap);
         retrieveData();
 
     }
@@ -226,20 +227,26 @@ public class ExploreAllPicturesMapActivity extends FragmentActivity implements O
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
-                    EventsModel eventsModel = dataSnapshot.getValue(EventsModel.class);
-                    addCustomMarkerOnMap(eventsModel.getName(), eventsModel.getLatitude(),eventsModel.getLongitude(),eventsModel.getEventImageURL());
+                    Pictures pictures = dataSnapshot.getValue(Pictures.class);
+                    addCustomMarkerOnMap(pictures.getPictureName(), pictures.getLatitude(), pictures.getLongitude(),pictures.getPictureURL());
                 }
 
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
+                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                    Pictures pictures = dataSnapshot.getValue(Pictures.class);
+                    addCustomMarkerOnMap(pictures.getPictureName(), pictures.getLatitude(), pictures.getLongitude(),pictures.getPictureURL());
+                }
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
+                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                    Pictures pictures = dataSnapshot.getValue(Pictures.class);
+                    addCustomMarkerOnMap(pictures.getPictureName(), pictures.getLatitude(), pictures.getLongitude(),pictures.getPictureURL());
+                }
             }
 
             @Override

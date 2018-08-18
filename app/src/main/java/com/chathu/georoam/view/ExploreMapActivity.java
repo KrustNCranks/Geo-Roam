@@ -37,6 +37,7 @@ public class ExploreMapActivity extends AppCompatActivity {
         myEvents = (Button) findViewById(R.id.myEventsButton);
         myPictures = (Button) findViewById(R.id.myPicturesButton);
         allEvents = (Button) findViewById(R.id.exploreEventsButton);
+        allPictures = (Button) findViewById(R.id.explorePicturesButton);
 
         // OnClick event for the cancel Button takes us back to the Dashboard
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -67,6 +68,14 @@ public class ExploreMapActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(ExploreMapActivity.this, ExploreAllEventsMapActivity.class));
+            }
+        });
+
+        // OnClick Event to load All Pictures
+        allPictures.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ExploreMapActivity.this, ExploreAllPicturesMapActivity.class));
             }
         });
     }
