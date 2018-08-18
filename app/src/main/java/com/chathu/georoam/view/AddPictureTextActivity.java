@@ -10,8 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.chathu.georoam.R;
+import com.chathu.georoam.controller.ValidationController;
 
 public class AddPictureTextActivity extends AppCompatActivity {
 
@@ -21,6 +23,7 @@ public class AddPictureTextActivity extends AppCompatActivity {
     private ImageView back;
     private Switch privateSwitch;
     private String isPrivate = null;
+    private ValidationController validator = ValidationController.getInstance();
 
     /**
      * This is the onCreate , when the activity runs, all the code runs in this
@@ -64,17 +67,28 @@ public class AddPictureTextActivity extends AppCompatActivity {
      * database
      */
     private void next(){
-        if(privateSwitch.isChecked()){
-            isPrivate = "private";
+        if(!validator.isEmpty(name.getText().toString()))
+        {
+            if (!validator.isEmpty(description.getText().toString())){
+                if(privateSwitch.isChecked()){
+                    isPrivate = "private";
+                }
+                else{
+                    isPrivate = "public";
+                }
+                Intent intent = new Intent ( AddPictureTextActivity.this, AddPictureMapActivity.class );
+                intent.putExtra ( "PictureName", name.getText().toString().trim() );
+                intent.putExtra ( "PictureDescription", description.getText().toString().trim() );
+                intent.putExtra("Status",isPrivate);
+                startActivity(intent);
+            }else {
+                Toast.makeText(AddPictureTextActivity.this,"Please Describe Your Image",Toast.LENGTH_SHORT).show();
+            }
+
+        }else {
+            Toast.makeText(AddPictureTextActivity.this,"Please Name Your Image",Toast.LENGTH_SHORT).show();
         }
-        else{
-            isPrivate = "public";
-        }
-        Intent intent = new Intent ( AddPictureTextActivity.this, AddPictureMapActivity.class );
-        intent.putExtra ( "PictureName", name.getText().toString().trim() );
-        intent.putExtra ( "PictureDescription", description.getText().toString().trim() );
-        intent.putExtra("Status",isPrivate);
-        startActivity(intent);
+
     }
 
     /**

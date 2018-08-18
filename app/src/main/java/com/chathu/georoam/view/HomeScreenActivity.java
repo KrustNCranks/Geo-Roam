@@ -4,16 +4,21 @@ import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.chathu.georoam.R;
+import com.chathu.georoam.controller.UserLoggedInController;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class HomeScreenActivity extends AppCompatActivity {
 
+    private static final String TAG = "HomeScreenActivity";
     private Button login;
     private Button register;
-
+    private UserLoggedInController isUserLoggedIn = UserLoggedInController.getInstance();
     /**
      * This is the onCreate , when the activity runs, all the code runs in this
      * @param savedInstanceState
@@ -48,5 +53,9 @@ public class HomeScreenActivity extends AppCompatActivity {
                 startActivity(new Intent(HomeScreenActivity.this, RegisterActivity.class));
             }
         });
+
+
+        // This will see if there are any users logged in, if there is, it will open up the Dasboard page directly
+        isUserLoggedIn.isLoggedIn(HomeScreenActivity.this);
     }
 }
