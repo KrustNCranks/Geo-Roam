@@ -86,11 +86,11 @@ public class EventImageAdapter extends RecyclerView.Adapter<EventImageAdapter.Im
 
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            menu.setHeaderTitle("Select Action");
-            MenuItem viewEvent =  menu.add(Menu.NONE, 1, 1, "View Event");
+            //menu.setHeaderTitle("Select Action");
+            //MenuItem viewEvent =  menu.add(Menu.NONE, 1, 1, "View Event");
             MenuItem deleteEvent = menu.add(Menu.NONE, 1, 1, "Delete Event");
 
-            viewEvent.setOnMenuItemClickListener(this);
+            //viewEvent.setOnMenuItemClickListener(this);
             deleteEvent.setOnMenuItemClickListener(this);
         }
 
@@ -101,7 +101,7 @@ public class EventImageAdapter extends RecyclerView.Adapter<EventImageAdapter.Im
                 if(position != RecyclerView.NO_POSITION){
 
                     switch (item.getItemId()){
-                        case 1: mListener.onViewEventClick(position); return true;
+                        case 1: mListener.onDeleteEventClick(position); return true;
                         case 2: mListener.onDeleteEventClick(position); return true;
                     }
                 }
