@@ -35,6 +35,8 @@ public class AddPictureMapActivity extends FragmentActivity implements OnMapRead
     private Boolean permission_granted = false;
     private GoogleMap mMap;
     private static final int PLACE_PICKER_REQUEST = 1;
+    private PermissionsController permissionsController = PermissionsController.getInstance();
+    private DeviceLocatorController deviceLocatorController = DeviceLocatorController.getInstance();
 
     /**
      * This is the onCreate , when the activity runs, all the code runs in this
@@ -47,8 +49,7 @@ public class AddPictureMapActivity extends FragmentActivity implements OnMapRead
 
 
         // This get Location permissions and initializes the map
-        PermissionsController perms = new PermissionsController();
-        if (perms.getLocationPermission(AddPictureMapActivity.this))
+        if (permissionsController.getLocationPermission(AddPictureMapActivity.this))
         {
             permission_granted = true;
             initMap();
@@ -138,7 +139,6 @@ public class AddPictureMapActivity extends FragmentActivity implements OnMapRead
          * This Will call the Device Locator Controller and gets the device's locations and moves the
          * camera to the current location
          */
-        DeviceLocatorController deviceLocatorController = new DeviceLocatorController();
         deviceLocatorController.getDeviceLocation(AddPictureMapActivity.this, permission_granted,mMap);
     }
 

@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.chathu.georoam.R;
+import com.chathu.georoam.controller.PermissionsController;
 import com.chathu.georoam.model.LatLong;
 import com.chathu.georoam.model.Pictures;
 import com.chathu.georoam.model.UserPictureUpload;
@@ -66,6 +67,8 @@ public class AddPictureImageActivity extends AppCompatActivity {
     private Button addPicture;
     private Button cancel;
     private String userID;
+
+    private PermissionsController permissionsController = PermissionsController.getInstance();
     /**
      * This is the onCreate , when the activity runs, all the code runs in this
      * @param savedInstanceState
@@ -176,7 +179,7 @@ public class AddPictureImageActivity extends AppCompatActivity {
      * device gallery to select the image
      */
     private void chooseImage(){
-        //checkPermission();
+        permissionsController.checkStoragePermission(AddPictureImageActivity.this);
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
         startActivityForResult(intent.createChooser(intent,"Choose your Picture"),PICK_IMAGE_REQUEST);

@@ -36,6 +36,9 @@ public class AddEventMapActivity extends FragmentActivity implements OnMapReadyC
     private GoogleMap mMap;
     private static final int PLACE_PICKER_REQUEST = 1;
 
+    private PermissionsController permissionsController = PermissionsController.getInstance();
+    private DeviceLocatorController deviceLocatorController = DeviceLocatorController.getInstance();
+
     /**
      * This is the onCreate , when the activity runs, all the code runs in this
      * @param savedInstanceState
@@ -47,8 +50,7 @@ public class AddEventMapActivity extends FragmentActivity implements OnMapReadyC
 
 
         // This get Location permissions and initializes the map
-        PermissionsController perms = new PermissionsController();
-        if (perms.getLocationPermission(AddEventMapActivity.this))
+        if (permissionsController.getLocationPermission(AddEventMapActivity.this))
         {
             permission_granted = true;
             initMap();
@@ -142,7 +144,6 @@ public class AddEventMapActivity extends FragmentActivity implements OnMapReadyC
          * This Will call the Device Locator Controller and gets the device's locations and moves the
          * camera to the current location
          */
-        DeviceLocatorController deviceLocatorController = new DeviceLocatorController();
         deviceLocatorController.getDeviceLocation(AddEventMapActivity.this, permission_granted,mMap);
 
     }

@@ -63,6 +63,8 @@ public class AddEventImageActivity extends AppCompatActivity {
     private ImageView eventImage;
     private Button addEvent;
     private Button cancel;
+
+    private PermissionsController permissionsController = PermissionsController.getInstance();
     /**
      * This is the onCreate , when the activity runs, all the code runs in this
      * @param savedInstanceState
@@ -80,7 +82,6 @@ public class AddEventImageActivity extends AppCompatActivity {
         eventImage = (ImageView) findViewById(R.id.eventImage);
         addEvent = (Button) findViewById(R.id.addEventButton);
         cancel = (Button) findViewById(R.id.cancelEventButton);
-
 
 
         // Access the Firebase Auth instance
@@ -148,38 +149,13 @@ public class AddEventImageActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * This will check read write permissions
-     */
-    private void checkPermission(){
-        Log.d(TAG,"getFilePermission: ASKING FOR STORAGE PERMISSIONS");
-        String[] permissions = {WRITE_PERMISSION, READ_PERMISSION};
-
-        if(ContextCompat.checkSelfPermission(this.getApplicationContext(),WRITE_PERMISSION)== PackageManager.PERMISSION_GRANTED){
-            if(ContextCompat.checkSelfPermission(this.getApplicationContext(),READ_PERMISSION)== PackageManager.PERMISSION_GRANTED){
-                Log.d(TAG,"checkPermission: BOTH PERMISSIONS GRANTED");
-                permission_granted = true;
-            }else{
-                Log.e(TAG,"checkPermission: PERMISSIONS NOT GRANTED");
-                ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
-            }
-        }
-        else{
-            Log.e(TAG,"checkPermission: PERMISSIONS NOT GRANTED");
-            ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
-        }
-
-    }
 
     /**
      * This is the chooseImage option that creates an image chooser dialog that allows the user to browse through the
      * device gallery to select the image
      */
     private void chooseImage(){
-        //checkPermission();
-        // Checks For Permission
-        PermissionsController perms = new PermissionsController();
-        perms.checkStoragePermission(AddEventImageActivity.this);
+        permissionsController.checkStoragePermission(AddEventImageActivity.this);
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
         startActivityForResult(intent.createChooser(intent,"Choose your Picture"),PICK_IMAGE_REQUEST);
