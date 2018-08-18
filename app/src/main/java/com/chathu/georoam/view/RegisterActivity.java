@@ -101,7 +101,7 @@ public class RegisterActivity extends AppCompatActivity {
                             intent.putExtra ( "Password", password.getText().toString().trim() );
                             startActivity(intent);
                         }else{
-                            Toast.makeText(RegisterActivity.this,"Passwords do no match",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this,"Passwords do not match",Toast.LENGTH_SHORT).show();
                         }
                     }else{
                         Toast.makeText(RegisterActivity.this,"Please Enter a PASSWORD",Toast.LENGTH_SHORT).show();
