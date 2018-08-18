@@ -23,15 +23,32 @@
             android:id="@+id/cardViewImage"
             android:layout_width="match_parent"
             android:layout_height="200dp" />
-        <TextView
-            android:id="@+id/cardViewImageNameDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="Description"
-            android:textStyle="bold"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/cardViewImageNameDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="Description"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/cardViewStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="Status"
+                android:textStyle="bold"/>
+        </RelativeLayout>
+
+
         
     </LinearLayout>
 

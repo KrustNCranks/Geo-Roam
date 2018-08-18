@@ -38,6 +38,7 @@ public class EventImageAdapter extends RecyclerView.Adapter<EventImageAdapter.Im
         EventsModel events = mEvents.get(position);
         holder.cardViewEventName.setText(events.getName());
         holder.cardViewEventDescription.setText(events.getDescription());
+        holder.cardViewStatus.setText(events.getIsPrivate());
         Picasso.get().load(events.getEventImageURL()).fit().centerCrop().into(holder.cardViewEventImage);
     }
 
@@ -50,12 +51,15 @@ public class EventImageAdapter extends RecyclerView.Adapter<EventImageAdapter.Im
 
         public TextView cardViewEventName;
         public TextView cardViewEventDescription;
+        public TextView cardViewStatus;
         public ImageView cardViewEventImage;
+
         public ImageHolderView(View itemView) {
             super(itemView);
 
             cardViewEventName = itemView.findViewById(R.id.cardViewEventNameText);
             cardViewEventDescription = itemView.findViewById(R.id.cardViewEventDescription);
+            cardViewStatus = itemView.findViewById(R.id.cardViewEventStatus);
             cardViewEventImage = itemView.findViewById(R.id.cardViewEventImage);
         }
     }

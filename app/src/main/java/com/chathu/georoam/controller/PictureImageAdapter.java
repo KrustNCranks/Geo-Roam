@@ -38,6 +38,7 @@ public class PictureImageAdapter extends RecyclerView.Adapter<PictureImageAdapte
         Pictures currentPicture = mPictures.get(position);
         holder.cardViewImageName.setText(currentPicture.getPictureName());
         holder.cardViewImageDescription.setText(currentPicture.getPictureDescription());
+        holder.cardViewStatus.setText(currentPicture.getIsPrivate());
         Picasso.get().load(currentPicture.getPictureURL()).fit().centerCrop().into(holder.cardViewImage);
     }
 
@@ -49,6 +50,7 @@ public class PictureImageAdapter extends RecyclerView.Adapter<PictureImageAdapte
     public class ImageViewHolder extends RecyclerView.ViewHolder{
         public TextView cardViewImageName;
         public TextView cardViewImageDescription;
+        public TextView cardViewStatus;
         public ImageView cardViewImage;
 
         public ImageViewHolder(View itemView) {
@@ -56,6 +58,7 @@ public class PictureImageAdapter extends RecyclerView.Adapter<PictureImageAdapte
 
             cardViewImageName = itemView.findViewById(R.id.cardViewImageNameText);
             cardViewImageDescription = itemView.findViewById(R.id.cardViewImageNameDescription);
+            cardViewStatus = itemView.findViewById(R.id.cardViewStatus);
             cardViewImage = itemView.findViewById(R.id.cardViewImage);
         }
     }

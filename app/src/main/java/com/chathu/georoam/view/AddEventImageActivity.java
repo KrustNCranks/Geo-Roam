@@ -237,7 +237,6 @@ public class AddEventImageActivity extends AppCompatActivity {
                         final String eventEndDate = getIntent().getStringExtra("EventEndDate");
                         final String locationEvent = getIntent().getStringExtra("LocationName");
                         final String locationAddress = getIntent().getStringExtra("LocationAddress");
-                        //final LatLng locationCoordinates = getIntent().getExtras().getParcelable("LocationCoordinates");
                         final Double latitude = getIntent().getDoubleExtra("latitude",0.00);
                         final Double longitude = getIntent().getDoubleExtra("longitude",0.00);
                         final String imageUrl = imageUpload.getImageUrl();
