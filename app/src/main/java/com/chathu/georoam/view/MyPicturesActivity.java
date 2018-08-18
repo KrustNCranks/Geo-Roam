@@ -133,7 +133,7 @@ public class MyPicturesActivity extends AppCompatActivity implements PictureImag
 
     @Override
     public void onViewImageClick(int position) {
-        Toast.makeText(this, "Normal click at position: " + position, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Not Normal click at position: " + position, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -151,7 +151,7 @@ public class MyPicturesActivity extends AppCompatActivity implements PictureImag
             @Override
             public void onSuccess(Void aVoid) {
                 myRef.child(selectedKey).removeValue();
-                Toast.makeText(this, "Item Deleted" + , Toast.LENGTH_SHORT).show();
+                Toast.makeText(MyPicturesActivity.this, "Item Deleted" , Toast.LENGTH_SHORT).show();
             }
         });
 

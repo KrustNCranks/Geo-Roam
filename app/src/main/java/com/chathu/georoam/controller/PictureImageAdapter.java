@@ -82,11 +82,11 @@ public class PictureImageAdapter extends RecyclerView.Adapter<PictureImageAdapte
 
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            menu.setHeaderTitle("Select Action");
-            MenuItem viewImage =  menu.add(Menu.NONE, 1, 1, "View Image");
+            //menu.setHeaderTitle("Select Action");
+            //MenuItem viewImage =  menu.add(Menu.NONE, 1, 1, "View Image");
             MenuItem deleteImage = menu.add(Menu.NONE, 1, 1, "Delete Image");
 
-            viewImage.setOnMenuItemClickListener(this);
+            //viewImage.setOnMenuItemClickListener(this);
             deleteImage.setOnMenuItemClickListener(this);
         }
 
@@ -98,7 +98,7 @@ public class PictureImageAdapter extends RecyclerView.Adapter<PictureImageAdapte
 
                     switch (item.getItemId()){
                         case 1:
-                            mListener.onViewImageClick(position);
+                            mListener.onDeleteImageClick(position);
                             return true;
                         case 2:
                             mListener.onDeleteImageClick(position);
