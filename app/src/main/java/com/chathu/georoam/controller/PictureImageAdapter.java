@@ -3,7 +3,10 @@ package com.chathu.georoam.controller;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -19,6 +22,7 @@ public class PictureImageAdapter extends RecyclerView.Adapter<PictureImageAdapte
 
     private Context mContext;
     private List<Pictures> mPictures;
+    private PictureImageAdapter.OnItemClickListener mListener;
 
     // Constructor
     public PictureImageAdapter(Context context, List<Pictures> pictures){
@@ -47,7 +51,8 @@ public class PictureImageAdapter extends RecyclerView.Adapter<PictureImageAdapte
         return mPictures.size();
     }
 
-    public class ImageViewHolder extends RecyclerView.ViewHolder{
+    public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnCreateContextMenuListener,
+            MenuItem.OnMenuItemClickListener{
         public TextView cardViewImageName;
         public TextView cardViewImageDescription;
         public TextView cardViewStatus;
@@ -60,6 +65,62 @@ public class PictureImageAdapter extends RecyclerView.Adapter<PictureImageAdapte
             cardViewImageDescription = itemView.findViewById(R.id.cardViewImageNameDescription);
             cardViewStatus = itemView.findViewById(R.id.cardViewStatus);
             cardViewImage = itemView.findViewById(R.id.cardViewImage);
+
+            itemView.setOnClickListener(this);
+            itemView.setOnCreateContextMenuListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            if(mListener !=null){
+                int position = getAdapterPosition();
+                if(position != RecyclerView.NO_POSITION){
+                    mListener.OnItemClick(position);
+                }
+            }
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            menu.setHeaderTitle("Select Action");
+            MenuItem viewImage =  menu.add(Menu.NONE, 1, 1, "View Image");
+            MenuItem deleteImage = menu.add(Menu.NONE, 1, 1, "Delete Image");
+
+            viewImage.setOnMenuItemClickListener(this);
+            deleteImage.setOnMenuItemClickListener(this);
+        }
+
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+            if(mListener !=null){
+                int position = getAdapterPosition();
+                if(position != RecyclerView.NO_POSITION){
+
+                    switch (item.getItemId()){
+                        case 1:
+                            mListener.onViewImageClick(position);
+                            return true;
+                        case 2:
+                            mListener.onDeleteImageClick(position);
+                            return true;
+                    }
+                }
+            }
+            return false;
+        }
+    }
+
+
+
+    public interface OnItemClickListener {
+        void onViewImageClick(int position);
+
+        void OnItemClick(int position);
+
+        void onDeleteImageClick(int position);
+    }
+
+    public void setOnItemClickListener(PictureImageAdapter.OnItemClickListener listener) {
+        mListener = listener;
     }
 }

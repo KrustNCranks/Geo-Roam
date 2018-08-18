@@ -2,6 +2,7 @@ package com.chathu.georoam.model;
 
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.Exclude;
 
 public class Pictures {
     private String pictureName;
@@ -13,6 +14,7 @@ public class Pictures {
     private String pictureURL;
     private String userID;
     private String isPrivate;
+    private String mKey;
 
     public Pictures(){}
 
@@ -98,5 +100,15 @@ public class Pictures {
         this.pictureURL = pictureURL;
         this.userID = userID;
         this.isPrivate = isPrivate;
+    }
+
+    @Exclude
+    public String getKey() {
+        return mKey;
+    }
+
+    @Exclude
+    public void setKey(String key) {
+        mKey = key;
     }
 }

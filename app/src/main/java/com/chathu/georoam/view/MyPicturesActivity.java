@@ -10,8 +10,10 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.chathu.georoam.R;
+import com.chathu.georoam.controller.EventImageAdapter;
 import com.chathu.georoam.controller.PictureImageAdapter;
 import com.chathu.georoam.model.Pictures;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -20,11 +22,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyPicturesActivity extends AppCompatActivity {
+public class MyPicturesActivity extends AppCompatActivity implements PictureImageAdapter.OnItemClickListener {
 
     private static final String TAG = "MY PICTURES";
     private RecyclerView mRecyclerView;
@@ -35,6 +39,9 @@ public class MyPicturesActivity extends AppCompatActivity {
     private DatabaseReference myRef;
     private List<Pictures> mPictures;
     private String userID;
+    private FirebaseStorage myStorage;
+
+    private ChildEventListener mDBListener;
 
     /**
      * This is the onCreate , when the activity runs, all the code runs in this
@@ -51,9 +58,15 @@ public class MyPicturesActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mPictures = new ArrayList<>();
+        mAdapter = new PictureImageAdapter(MyPicturesActivity.this,mPictures);
+        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(MyPicturesActivity.this);
 
         // Access the Firebase Auth instance
         mAuth = FirebaseAuth.getInstance();
+
+        // Setting the Firebase References
+        myRef = FirebaseDatabase.getInstance().getReference("Picture_Post");
 
         // Get userID
         FirebaseUser user = mAuth.getCurrentUser();
@@ -72,15 +85,20 @@ public class MyPicturesActivity extends AppCompatActivity {
             }
         };
 
+        // This gets the Firebase Storage reference
+        myStorage = FirebaseStorage.getInstance();
+
+        // This gets the Firebase Database reference
         myRef = FirebaseDatabase.getInstance().getReference("Picture_Post").child(userID);
 
-        myRef.addChildEventListener(new ChildEventListener() {
+
+        mDBListener= myRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Pictures pictures = dataSnapshot.getValue(Pictures.class);
+                pictures.setKey(dataSnapshot.getKey());
                 mPictures.add(pictures);
-                mAdapter = new PictureImageAdapter(MyPicturesActivity.this,mPictures);
-                mRecyclerView.setAdapter(mAdapter);
+                mAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -90,10 +108,13 @@ public class MyPicturesActivity extends AppCompatActivity {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                Pictures pictures = dataSnapshot.getValue(Pictures.class);
+                /*Pictures pictures = dataSnapshot.getValue(Pictures.class);
+                pictures.setKey(dataSnapshot.getKey());
                 mPictures.add(pictures);
                 mAdapter = new PictureImageAdapter(MyPicturesActivity.this,mPictures);
                 mRecyclerView.setAdapter(mAdapter);
+                mAdapter.setOnItemClickListener(MyPicturesActivity.this);
+                mAdapter.notifyDataSetChanged(); */
             }
 
             @Override
@@ -108,5 +129,37 @@ public class MyPicturesActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    public void onViewImageClick(int position) {
+        Toast.makeText(this, "Normal click at position: " + position, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void OnItemClick(int position) {
+        Toast.makeText(this, "Whatever click at position: " + position, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDeleteImageClick(int position) {
+        Pictures selectedItem = mPictures.get(position);
+        final String selectedKey = selectedItem.getKey();
+
+        StorageReference imageRef = myStorage.getReferenceFromUrl(selectedItem.getPictureURL());
+        imageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                myRef.child(selectedKey).removeValue();
+                Toast.makeText(this, "Item Deleted" + , Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        myRef.removeEventListener(mDBListener);
     }
 }

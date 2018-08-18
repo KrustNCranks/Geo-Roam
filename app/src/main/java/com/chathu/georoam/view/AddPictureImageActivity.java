@@ -55,6 +55,7 @@ public class AddPictureImageActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseDatabase db;
     private DatabaseReference myRef;
+    private DatabaseReference myRef2;
     private StorageReference storageReference;
     private FirebaseAuth.AuthStateListener authListen;
 
@@ -115,9 +116,6 @@ public class AddPictureImageActivity extends AppCompatActivity {
         // Access the Firebase Auth instance
         mAuth = FirebaseAuth.getInstance();
 
-        // Initialize Database
-        db = FirebaseDatabase.getInstance();
-        myRef = db.getReference();
 
         // Initialize Firebase Storage
         storageReference = FirebaseStorage.getInstance().getReference();
@@ -125,6 +123,11 @@ public class AddPictureImageActivity extends AppCompatActivity {
         // Get userID
         FirebaseUser user = mAuth.getCurrentUser();
         userID = user.getUid();
+
+        // Initialize Database
+        db = FirebaseDatabase.getInstance();
+        myRef = db.getReference("Picture_Post_Public").child("public_pictures");
+        myRef2 = db.getReference("Picture_Post").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
         // This is an Auth listener which pays attention on any change of state,
         authListen = new FirebaseAuth.AuthStateListener() {
@@ -269,6 +272,7 @@ public class AddPictureImageActivity extends AppCompatActivity {
                         String isPublic = "public";
                         String isitPrivate = "private";
 
+
                         Pictures pictures = new Pictures(
                                 pictureName,
                                 pictureDescription,
@@ -280,12 +284,11 @@ public class AddPictureImageActivity extends AppCompatActivity {
                                 userID,
                                 isPrivate
                         );
-
-
+                        String uploadID = myRef.push().getKey();
+                        String uploadID2 = myRef2.push().getKey();
                         if(isPrivate.equals(isPublic)){
                             // This get an instance of the firebase database and uses this instance to post the object to the real time online database
-                            FirebaseDatabase.getInstance().getReference("Picture_Post_Public").child("public_pictures").push()
-                                    .setValue(pictures).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            myRef.child(uploadID).setValue(pictures).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
@@ -302,8 +305,8 @@ public class AddPictureImageActivity extends AppCompatActivity {
                             });
                         }else if (isPrivate.equals(isitPrivate)){
                             // This get an instance of the firebase database and uses this instance to post the object to the real time online database
-                            FirebaseDatabase.getInstance().getReference("Picture_Post").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).push()
-                                    .setValue(pictures).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                            myRef2.child(uploadID).setValue(pictures).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
@@ -320,8 +323,8 @@ public class AddPictureImageActivity extends AppCompatActivity {
                             });
                         }
                         // This get an instance of the firebase database and uses this instance to post the object to the real time online database
-                        FirebaseDatabase.getInstance().getReference("Picture_Post").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).push()
-                                .setValue(pictures).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                        myRef2.child(uploadID).setValue(pictures).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {

@@ -94,6 +94,12 @@ public class AddEventTextActivity extends AppCompatActivity {
         if(start.before(end)){
             if(!validator.isEmpty(eventName.getText().toString())){
                 if(!validator.isEmpty((eventDescription.getText().toString()))){
+                    if(privateSwitch.isChecked()){
+                        isPrivate = "private";
+                    }
+                    else{
+                        isPrivate = "public";
+                    }
                     Intent intent = new Intent( AddEventTextActivity.this, AddEventMapActivity.class );
                     intent.putExtra ( "EventName", eventName.getText().toString().trim() );
                     intent.putExtra ( "EventDescription", eventDescription.getText().toString().trim() );
@@ -105,12 +111,7 @@ public class AddEventTextActivity extends AppCompatActivity {
                 }else {
                     Toast.makeText(AddEventTextActivity.this,"Please Enter a Description",Toast.LENGTH_SHORT).show();
                 }
-                if(privateSwitch.isChecked()){
-                    isPrivate = "private";
-                }
-                else{
-                    isPrivate = "public";
-                }
+
 
             }else{
                 Toast.makeText(AddEventTextActivity.this, "Please Enter Event Name",Toast.LENGTH_SHORT).show();

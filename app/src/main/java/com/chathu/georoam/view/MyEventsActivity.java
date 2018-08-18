@@ -24,7 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyEventsActivity extends AppCompatActivity {
+public class MyEventsActivity extends AppCompatActivity implements EventImageAdapter.OnItemClickListener {
 
     private static final String TAG = "MY EVENTS";
     private RecyclerView mRecyclerView;
@@ -35,6 +35,8 @@ public class MyEventsActivity extends AppCompatActivity {
     private DatabaseReference myRef;
     private List<EventsModel> mEvents;
     private String userID;
+
+
 
     /**
      * This is the onCreate , when the activity runs, all the code runs in this
@@ -51,6 +53,7 @@ public class MyEventsActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mEvents = new ArrayList<>();
+
 
 
         // Access the Firebase Auth instance
@@ -82,7 +85,9 @@ public class MyEventsActivity extends AppCompatActivity {
                 mEvents.add(eventsModel);
                 mAdapter = new EventImageAdapter(MyEventsActivity.this,mEvents);
                 mRecyclerView.setAdapter(mAdapter);
+                mAdapter.setOnItemClickListener(MyEventsActivity.this);
             }
+
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -91,10 +96,7 @@ public class MyEventsActivity extends AppCompatActivity {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                EventsModel eventsModel = dataSnapshot.getValue(EventsModel.class);
-                mEvents.add(eventsModel);
-                mAdapter = new EventImageAdapter(MyEventsActivity.this,mEvents);
-                mRecyclerView.setAdapter(mAdapter);
+
             }
 
             @Override
@@ -107,20 +109,22 @@ public class MyEventsActivity extends AppCompatActivity {
 
             }
         });
-        /*myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                EventsModel events = dataSnapshot.getValue(EventsModel.class);
-                mEvents.add(events);
 
-                mAdapter = new EventImageAdapter(MyEventsActivity.this,mEvents);
-                mRecyclerView.setAdapter(mAdapter);
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(MyEventsActivity.this,databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }); */
+    }
+
+    @Override
+    public void onViewEventClick(int position) {
+
+    }
+
+    @Override
+    public void OnItemClick(int position) {
+
+    }
+
+    @Override
+    public void onDeleteEventClick(int position) {
+
     }
 }

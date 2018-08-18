@@ -1,6 +1,7 @@
 package com.chathu.georoam.model;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.Exclude;
 
 public class EventsModel {
     private String name;
@@ -14,6 +15,7 @@ public class EventsModel {
     private String eventImageURL;
     private String userID;
     private String isPrivate;
+    private String mKey;
 
     public EventsModel(){
 
@@ -119,5 +121,15 @@ public class EventsModel {
         this.eventImageURL = eventImageURL;
         this.userID = userID;
         this.isPrivate = isPrivate;
+    }
+
+    @Exclude
+    public String getKey() {
+        return mKey;
+    }
+
+    @Exclude
+    public void setKey(String key) {
+        mKey = key;
     }
 }

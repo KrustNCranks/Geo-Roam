@@ -52,6 +52,7 @@ public class AddEventImageActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseDatabase db;
     private DatabaseReference myRef;
+    private DatabaseReference myRef2;
     private StorageReference storageReference;
     private FirebaseAuth.AuthStateListener authListen;
 
@@ -89,7 +90,8 @@ public class AddEventImageActivity extends AppCompatActivity {
 
         // Initialize Database
         db = FirebaseDatabase.getInstance();
-        myRef = db.getReference();
+        myRef = db.getReference("Event_Post_Public").child("public_pictures");
+        myRef2 = db.getReference("Event_Post").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
         // Initialize Firebase Storage
         storageReference = FirebaseStorage.getInstance().getReference();
@@ -258,9 +260,10 @@ public class AddEventImageActivity extends AppCompatActivity {
                                 userID,
                                 isPrivate
                         );
-
+                        String uploadID = myRef.push().getKey();
+                        String uploadID2 = myRef2.push().getKey();
                         if (isPrivate.equals(isPublic)){
-                            FirebaseDatabase.getInstance().getReference("Event_Post_Public").child("public_pictures").push().setValue(event).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            myRef.child(uploadID).setValue(event).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
@@ -275,8 +278,7 @@ public class AddEventImageActivity extends AppCompatActivity {
                             });
                         }else if (isPrivate.equals(isitPrivate)){
                             // This get an instance of the firebase database and uses this instance to post the object to the real time online database
-                            FirebaseDatabase.getInstance().getReference("Event_Post").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).push()
-                                    .setValue(event).addOnCompleteListener(new OnCompleteListener<Void>() {
+                          myRef2.child(uploadID).setValue(event).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
@@ -292,8 +294,7 @@ public class AddEventImageActivity extends AppCompatActivity {
                         }
 
                         // This get an instance of the firebase database and uses this instance to post the object to the real time online database
-                        FirebaseDatabase.getInstance().getReference("Event_Post").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).push()
-                                .setValue(event).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        myRef2.child(uploadID).setValue(event).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
