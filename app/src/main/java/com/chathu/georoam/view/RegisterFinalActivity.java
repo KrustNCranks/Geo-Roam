@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 
 import com.chathu.georoam.R;
+import com.chathu.georoam.controller.ValidationController;
 import com.chathu.georoam.model.ProfilePictureUpload;
 import com.chathu.georoam.model.Users;
 import com.google.android.gms.tasks.Continuation;
@@ -61,11 +62,11 @@ public class RegisterFinalActivity extends AppCompatActivity {
     private EditText address;
     private EditText occupation;
     private Button updateButton;
-    private Button skipButton;
     private ImageView profilePicture;
 
     private static final int GALLERY_INTENT = 2;
     private Uri filePath;
+    private ValidationController validator = ValidationController.getInstance();
 
     private final int PICK_IMAGE_REQUEST = 71;
 
@@ -84,7 +85,6 @@ public class RegisterFinalActivity extends AppCompatActivity {
 
         // Adding XML Variables to the Controller in order to manipulate them
         updateButton = (Button) findViewById(R.id.updateButton);
-        skipButton = (Button) findViewById(R.id.skipButton);
         address = (EditText) findViewById(R.id.addressTxt);
         occupation = (EditText) findViewById(R.id.occupationTxt);
         profilePicture =(ImageView) findViewById(R.id.profilePictureImage);
@@ -219,42 +219,54 @@ public class RegisterFinalActivity extends AppCompatActivity {
     private void uploadImage(){
         if(filePath != null)
         {
-            final ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("Your Account is Being Created");
-            progressDialog.show();
+            if(!validator.isEmpty(address.getText().toString())){
+                if(!validator.isEmpty(occupation.getText().toString())){
+                    final ProgressDialog progressDialog = new ProgressDialog(this);
+                    progressDialog.setTitle("Your Account is Being Created");
+                    progressDialog.show();
 
-            final StorageReference ref = storageReference.child("images/"+ UUID.randomUUID().toString()+"."+getFileTypeExtension(filePath));
-            UploadTask uploadTask = ref.putFile(filePath);
+                    final StorageReference ref = storageReference.child("images/"+ UUID.randomUUID().toString()+"."+getFileTypeExtension(filePath));
+                    UploadTask uploadTask = ref.putFile(filePath);
 
-            uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                @Override
-                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                    if(!task.isSuccessful()){
-                        progressDialog.dismiss();
-                        throw task.getException();
-                    }
-                    return ref.getDownloadUrl();
+                    uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                        @Override
+                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                            if(!task.isSuccessful()){
+                                progressDialog.dismiss();
+                                throw task.getException();
+                            }
+                            return ref.getDownloadUrl();
+                        }
+                    }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            if(task.isSuccessful()){
+                                progressDialog.dismiss();
+                                Uri taskResult = task.getResult();
+                                String text = "ProfilePicture";
+                                ProfilePictureUpload imageUpload = new ProfilePictureUpload(getIntent().getStringExtra("Name")+text,taskResult.toString());
+                                updateDetails(imageUpload.getImageName(),imageUpload.getImageUrl());
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(RegisterFinalActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }else {
+                    Toast.makeText(RegisterFinalActivity.this,"Please Enter Your Occupation",Toast.LENGTH_SHORT).show();
                 }
-            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                @Override
-                public void onComplete(@NonNull Task<Uri> task) {
-                    if(task.isSuccessful()){
-                        progressDialog.dismiss();
-                        Uri taskResult = task.getResult();
-                        String text = "ProfilePicture";
-                        ProfilePictureUpload imageUpload = new ProfilePictureUpload(getIntent().getStringExtra("Name")+text,taskResult.toString());
-                        updateDetails(imageUpload.getImageName(),imageUpload.getImageUrl());
-                    }
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    progressDialog.dismiss();
-                    Toast.makeText(RegisterFinalActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
+
+            }else{
+                Toast.makeText(RegisterFinalActivity.this,"Please Enter Your Address",Toast.LENGTH_SHORT).show();
+            }
 
 
+
+        }else{
+            Toast.makeText(RegisterFinalActivity.this, "Please add a Profile Picture",Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -300,7 +312,6 @@ public class RegisterFinalActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 // If successfull this will navigate to the get started page
                                 Log.d(TAG, "profilePicture: "+userProfilePictureURL);
-                                Toast.makeText(RegisterFinalActivity.this, "USER CREATED",Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(RegisterFinalActivity.this, GetStartedActivity.class));
                             } else {
                                 // If Fail, it will display and error message as a toast
