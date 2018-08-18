@@ -22,7 +22,10 @@ public class UserLoggedInController {
         return myInstance;
     }
 
-
+    /**
+     * This will check if a user is logged in, if the user is logged in, it will open up directly to the dashboard page
+     * @param page
+     */
     public void isLoggedIn(Activity page){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
