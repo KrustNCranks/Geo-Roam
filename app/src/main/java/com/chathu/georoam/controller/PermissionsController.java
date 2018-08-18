@@ -21,7 +21,14 @@ public class PermissionsController {
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private FusedLocationProviderClient mFusedLocationProviderClient;
 
+    private static PermissionsController myInstance = new PermissionsController();
 
+    public static PermissionsController getInstance(){
+        if(myInstance == null){
+            return new PermissionsController();
+        }
+        return myInstance;
+    }
     /**
      * This will check read write permissions
      */

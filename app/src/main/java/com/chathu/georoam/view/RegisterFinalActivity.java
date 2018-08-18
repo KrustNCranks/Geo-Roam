@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 
 import com.chathu.georoam.R;
+import com.chathu.georoam.controller.PermissionsController;
 import com.chathu.georoam.controller.ValidationController;
 import com.chathu.georoam.model.ProfilePictureUpload;
 import com.chathu.georoam.model.Users;
@@ -67,6 +68,7 @@ public class RegisterFinalActivity extends AppCompatActivity {
     private static final int GALLERY_INTENT = 2;
     private Uri filePath;
     private ValidationController validator = ValidationController.getInstance();
+    private PermissionsController storagePermissions = PermissionsController.getInstance();
 
     private final int PICK_IMAGE_REQUEST = 71;
 
@@ -142,35 +144,13 @@ public class RegisterFinalActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
     }
 
-    /**
-     * This will check read write permissions
-     */
-    private void checkPermission(){
-        Log.d(TAG,"getFilePermission: ASKING FOR STORAGE PERMISSIONS");
-        String[] permissions = {WRITE_PERMISSION, READ_PERMISSION};
-
-        if(ContextCompat.checkSelfPermission(this.getApplicationContext(),WRITE_PERMISSION)== PackageManager.PERMISSION_GRANTED){
-            if(ContextCompat.checkSelfPermission(this.getApplicationContext(),READ_PERMISSION)== PackageManager.PERMISSION_GRANTED){
-                Log.d(TAG,"checkPermission: BOTH PERMISSIONS GRANTED");
-                permission_granted = true;
-            }else{
-                Log.e(TAG,"checkPermission: PERMISSIONS NOT GRANTED");
-                ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
-            }
-        }
-        else{
-            Log.e(TAG,"checkPermission: PERMISSIONS NOT GRANTED");
-            ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
-        }
-
-    }
 
     /**
      * This is the chooseImage option that creates an image chooser dialog that allows the user to browse through the
      * device gallery to select the image
      */
     private void chooseImage(){
-        checkPermission();
+        storagePermissions.checkStoragePermission(RegisterFinalActivity.this);
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
         startActivityForResult(intent.createChooser(intent,"Choose your Picture"),PICK_IMAGE_REQUEST);

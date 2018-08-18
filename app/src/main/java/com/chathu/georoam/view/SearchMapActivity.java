@@ -38,6 +38,8 @@ public class SearchMapActivity extends FragmentActivity implements OnMapReadyCal
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private Boolean permission_granted = false;
     private GoogleMap mMap;
+    private DeviceLocatorController deviceLocator = DeviceLocatorController.getInstance();
+    private PermissionsController locationPermissions = PermissionsController.getInstance();
 
     /**
      * this is the onCreate function for the Maps Activity, once the activity loads this sets up a fragment and starts loading
@@ -50,8 +52,7 @@ public class SearchMapActivity extends FragmentActivity implements OnMapReadyCal
         setContentView(R.layout.search_map_activity);
 
         // This get Location permissions and initializes the map
-        PermissionsController perms = new PermissionsController();
-        if (perms.getLocationPermission(SearchMapActivity.this))
+        if (locationPermissions.getLocationPermission(SearchMapActivity.this))
         {
             permission_granted = true;
             initMap();
@@ -90,8 +91,7 @@ public class SearchMapActivity extends FragmentActivity implements OnMapReadyCal
          * This Will call the Device Locator Controller and gets the device's locations and moves the
          * camera to the current location
          */
-        DeviceLocatorController deviceLocatorController = new DeviceLocatorController();
-        deviceLocatorController.getDeviceLocation(SearchMapActivity.this, permission_granted,mMap);
+        deviceLocator.getDeviceLocation(SearchMapActivity.this,permission_granted,mMap);
 
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);

@@ -21,6 +21,14 @@ public class DeviceLocatorController {
 
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private Boolean permission_granted = false;
+    private static DeviceLocatorController myInstance = new DeviceLocatorController();
+
+    public static DeviceLocatorController getInstance(){
+        if(myInstance == null){
+            return new DeviceLocatorController();
+        }
+        return myInstance;
+    }
 
     /**
      * This Funtions gets the device's locations and moves the camera to the current location

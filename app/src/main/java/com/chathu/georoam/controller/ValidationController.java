@@ -40,7 +40,7 @@ public class ValidationController {
     /**
      * Check if the given text field is empty
      *
-     * @param editText
+     * @param text
      * @return
      */
     public boolean isEmpty(String text)
